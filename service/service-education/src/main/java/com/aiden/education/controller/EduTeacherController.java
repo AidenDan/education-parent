@@ -1,6 +1,7 @@
 package com.aiden.education.controller;
 
 
+import com.aiden.commenUtils.CommonResult;
 import com.aiden.education.entity.EduTeacher;
 import com.aiden.education.service.impl.EduTeacherServiceImpl;
 import io.swagger.annotations.Api;
@@ -29,17 +30,17 @@ public class EduTeacherController {
     // 查询所有讲师
     @ApiOperation(value = "查询所有的讲师")
     @GetMapping("/findAll")
-    public List<EduTeacher> findAllTeacher() {
+    public CommonResult findAllTeacher() {
         List<EduTeacher> teacherList = eduTeacherService.list(null);
-        return teacherList;
+        return CommonResult.success().data("itemList", teacherList);
     }
 
     // 逻辑删除讲师
     @ApiOperation(value = "根据id逻辑删除讲师")
     @DeleteMapping("/{id}")
-    public boolean deleteTeacherLogic(@PathVariable String id) {
+    public CommonResult deleteTeacherLogic(@PathVariable String id) {
         boolean isReomve = eduTeacherService.removeById(id);
-        return isReomve;
+        return isReomve ? CommonResult.success() : CommonResult.fail();
     }
 }
 

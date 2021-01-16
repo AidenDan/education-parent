@@ -1,8 +1,11 @@
 package com.aiden.education.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+
 import java.util.Date;
+
 import com.baomidou.mybatisplus.annotation.TableId;
+
 import java.io.Serializable;
 
 import com.baomidou.mybatisplus.annotation.TableLogic;
@@ -23,7 +26,7 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@ApiModel(value="EduTeacher对象", description="讲师")
+@ApiModel(value = "EduTeacher对象", description = "讲师")
 public class EduTeacher implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -59,6 +62,4 @@ public class EduTeacher implements Serializable {
 
     @ApiModelProperty(value = "更新时间")
     private Date gmtModified;
-
-
 }
