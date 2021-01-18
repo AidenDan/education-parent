@@ -3,6 +3,7 @@ package com.aiden.education.controller;
 
 import com.aiden.commenUtils.CommonResult;
 import com.aiden.education.entity.EduTeacher;
+import com.aiden.education.query.TeacherQuery;
 import com.aiden.education.service.impl.EduTeacherServiceImpl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -62,6 +63,14 @@ public class EduTeacherController {
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("total", total);
         resultMap.put("rows", teacherList);
+        return CommonResult.success().data(resultMap);
+    }
+
+    // 分页查询讲师 查询到的数据都封装Page中
+    @ApiOperation(value = "按照条件分页查询讲师")
+    @PostMapping("/pageCondition/{current}/{limit}")
+    public CommonResult pageCondition(@PathVariable("current") long current, @PathVariable("limit") long limit, @RequestBody TeacherQuery teacherQuery) {
+        Map<String, Object> resultMap = eduTeacherService.pageTeacher(current, limit, teacherQuery);
         return CommonResult.success().data(resultMap);
     }
 }
