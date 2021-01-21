@@ -73,5 +73,30 @@ public class EduTeacherController {
         Map<String, Object> resultMap = eduTeacherService.pageTeacher(current, limit, teacherQuery);
         return CommonResult.success().data(resultMap);
     }
+
+    // 添加讲师
+    @ApiOperation(value = "添加讲师")
+    @PostMapping("/addTeacher")
+    public CommonResult addTeacher(@RequestBody EduTeacher teacher) {
+        boolean save = eduTeacherService.save(teacher);
+        return save ? CommonResult.success() : CommonResult.fail();
+    }
+
+    // 根据id查询讲师
+    @ApiOperation(value = "查询讲师")
+    @GetMapping("/searchTeacher/{id}")
+    public CommonResult searchTeacherById(@PathVariable("id") String id) {
+        EduTeacher teacher = eduTeacherService.getById(id);
+        return teacher == null ? CommonResult.fail() : CommonResult.success().data("item", teacher);
+    }
+
+    // 根据id更新讲师
+    @ApiOperation(value = "更新讲师")
+    @PutMapping("/updateTeacher/{id}")
+    public CommonResult updateTeacherById(@PathVariable("id") String id, @RequestBody EduTeacher eduTeacher) {
+        eduTeacher.setId(id);
+        boolean update = eduTeacherService.updateById(eduTeacher);
+        return update ? CommonResult.success() : CommonResult.fail();
+    }
 }
 
