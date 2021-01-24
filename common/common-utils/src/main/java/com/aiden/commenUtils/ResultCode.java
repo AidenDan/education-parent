@@ -7,8 +7,8 @@ package com.aiden.commenUtils;
  * @date 2021-1-16 11:25:29
  */
 public enum ResultCode {
-    SUCCESS(true, 200, "成功"),
-    FAIL(false, 201, "失败");
+    SUCCESS(true, 20000, "成功"),
+    FAIL(false, 20001, "失败");
 
     ResultCode(boolean status, int code, String message) {
         this.status = status;
