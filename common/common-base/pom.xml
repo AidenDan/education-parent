@@ -11,4 +11,12 @@
     <packaging>jar</packaging>
     <artifactId>common-base</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.aiden</groupId>
+            <artifactId>common-utils</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
 </project>
