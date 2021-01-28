@@ -115,6 +115,24 @@
         this.teacherQuery = {}
         // 2.查询所有数据
         this.getTeacherList()
+      },
+
+      // 讲师删除功能
+      removeDataById(id) {
+        this.$confirm('此操作将永久删除该讲师数据, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => { // 点击确定执行
+          teacher.deleteTeacherById(id)
+            .then((response) => {
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              });
+              this.getTeacherList();
+            })
+        })
       }
     }
   }

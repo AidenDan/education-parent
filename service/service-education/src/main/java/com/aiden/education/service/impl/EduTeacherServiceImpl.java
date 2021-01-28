@@ -41,6 +41,8 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
         if (!StringUtils.isEmpty(teacherQuery.getEnd())) {
             wrapper.le("gmt_modified", teacherQuery.getEnd());
         }
+        // 按照创建时间倒序排列查询结果
+        wrapper.orderByDesc("gmt_create");
         // 查询数据
         this.page(page, wrapper);
         // 当前页数据
