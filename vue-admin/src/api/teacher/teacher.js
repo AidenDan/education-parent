@@ -17,10 +17,25 @@ export default {
     })
   },
   // 保存讲师的方法
-  saveTeacher(teacher){
+  saveTeacher(teacher) {
     return request({
       url: `/education/edu-teacher/addTeacher`,
       method: 'post',
+      data: teacher // post请求提交参数对象，以json格式，封装到ResponseBody中
+    })
+  },
+  // 根据讲师id查询讲师信息
+  feedBackTeacherInfo(id) {
+    return request({
+      url: `/education/edu-teacher/searchTeacher/${id}`,
+      method: 'get',
+    })
+  },
+  // 更新讲师信息
+  updateTeacherInfo(teacher) {
+    return request({
+      url: `/education/edu-teacher/updateTeacher/${teacher.id}`,
+      method: 'put',
       data: teacher // post请求提交参数对象，以json格式，封装到ResponseBody中
     })
   }
