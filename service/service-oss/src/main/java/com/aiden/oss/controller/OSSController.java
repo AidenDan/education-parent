@@ -20,7 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Api("oss服务")
 @RestController
-@RequestMapping("/teacher/oss")
+@RequestMapping("/oss")
 @CrossOrigin
 public class OSSController {
     @Autowired
@@ -28,7 +28,7 @@ public class OSSController {
 
     @ApiOperation("上传讲师头像")
     @PostMapping("/uploadAvatar")
-    public CommonResult upLoadTeacherAvatar(MultipartFile file){
+    public CommonResult upLoadTeacherAvatar(MultipartFile file) {
         String url = ossService.upLoadTeacherAvatar(file);
         return CommonResult.success().data("url", url);
     }
