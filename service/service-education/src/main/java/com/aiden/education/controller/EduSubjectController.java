@@ -3,15 +3,15 @@ package com.aiden.education.controller;
 
 import com.aiden.commenUtils.CommonResult;
 import com.aiden.commonBase.exceptionHandler.EduException;
+import com.aiden.education.entity.subject.LevelOneSubject;
 import com.aiden.education.service.EduSubjectService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * <p>
@@ -37,6 +37,12 @@ public class EduSubjectController {
         }
         eduSubjectService.uploadSubject(file);
         return CommonResult.success();
+    }
+
+    @GetMapping("/getTotalSubject")
+    public CommonResult getTotalSubject() {
+        List<LevelOneSubject> totalSubject = eduSubjectService.getTotalSubject();
+        return CommonResult.success().data("totalSubject", totalSubject);
     }
 }
 
