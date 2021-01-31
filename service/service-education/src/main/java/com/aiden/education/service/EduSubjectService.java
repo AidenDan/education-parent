@@ -2,6 +2,7 @@ package com.aiden.education.service;
 
 import com.aiden.education.entity.EduSubject;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * <p>
@@ -13,4 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface EduSubjectService extends IService<EduSubject> {
 
+    void uploadSubject(MultipartFile file);
 }

@@ -96,12 +96,14 @@
       // 关闭上传头像的对话框
       close() {
         this.imagecropperShow = false;
+        this.imagecropperKey = this.imagecropperKey + 1;
       },
       // 上传图片成功后的回调方法
       // data = response.data 这里已被组件封装,直接写data
       cropSuccess(data) {
         this.imagecropperShow = false;
         this.teacher.avatar = data.url;
+        this.imagecropperKey = this.imagecropperKey + 1;
       },
       init() {
         if (this.$route.params && this.$route.params.id) {
