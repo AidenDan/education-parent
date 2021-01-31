@@ -17,9 +17,9 @@ import Layout from '../views/layout/Layout'
  * redirect: noredirect           if `redirect:noredirect` will no redirect in the breadcrumb
  * name:'router-name'             the name is used by <keep-alive> (must set!!!)
  * meta : {
-    title: 'title'               the name show in submenu and breadcrumb (recommend set)
-    icon: 'svg-name'             the icon show in the sidebar,
-  }
+      title: 'title'               the name show in submenu and breadcrumb (recommend set)
+      icon: 'svg-name'             the icon show in the sidebar,
+    }
  **/
 export const constantRouterMap = [
   {path: '/login', component: () => import('@/views/login/index'), hidden: true},
@@ -61,7 +61,29 @@ export const constantRouterMap = [
         name: '编辑讲师',
         component: () => import('@/views/education/teacher/Save'),
         meta: {title: '编辑讲师', icon: 'tree', noCache: true},
-        hidden:true  // 隐藏该组件
+        hidden: true  // 隐藏该组件
+      }
+    ]
+  },
+
+  {
+    path: '/subject',
+    component: Layout,
+    redirect: '/subject/subjectList',
+    name: '课程分类管理',
+    meta: {title: '课程分类管理', icon: 'example'},
+    children: [
+      {
+        path: '/subjectList',
+        name: '课程分类列表',
+        component: () => import('@/views/education/subject/List'),
+        meta: {title: '课程分类列表', icon: 'table'}
+      },
+      {
+        path: '/subjectSave',
+        name: '添加课程分类',
+        component: () => import('@/views/education/subject/Save'),
+        meta: {title: '添加课程分类', icon: 'tree'}
       }
     ]
   },
