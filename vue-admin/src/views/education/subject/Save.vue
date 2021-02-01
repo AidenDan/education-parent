@@ -64,7 +64,9 @@
         this.$message({
           type: 'success',
           message: response.message
-        })
+        });
+        // 导入课程列表成功后跳转到课程列表页面
+        this.$router.push({path: "/subjectList"})
       },
       // 上传失败的回调函数
       fileUploadError() {
