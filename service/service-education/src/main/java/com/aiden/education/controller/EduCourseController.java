@@ -1,9 +1,12 @@
 package com.aiden.education.controller;
 
 
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import com.aiden.commenUtils.CommonResult;
+import com.aiden.education.query.vo.CourseInfoVO;
+import com.aiden.education.service.EduCourseService;
+import io.swagger.annotations.Api;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -13,9 +16,20 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Aiden
  * @since 2021-01-10
  */
+
+@Api(description = "课程信息管理接口")
 @RestController
 @RequestMapping("/education/edu-course")
+@CrossOrigin
 public class EduCourseController {
+    @Autowired
+    EduCourseService eduCourseService;
+
+    @PostMapping("/addCourseInfo")
+    public CommonResult addCourseInfo(@RequestBody CourseInfoVO courseInfoVO) {
+        eduCourseService.addCourseInfo(courseInfoVO);
+        return CommonResult.success();
+    }
 
 }
 
