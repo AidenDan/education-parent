@@ -30,6 +30,5 @@ public class EduCourseController {
         eduCourseService.addCourseInfo(courseInfoVO);
         return CommonResult.success();
     }
-
 }
 
