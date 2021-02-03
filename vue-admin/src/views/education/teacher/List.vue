@@ -112,7 +112,7 @@
       // 重置查询参数
       resetData() {
         // 1.清空查询参数
-        this.teacherQuery = {}
+        this.teacherQuery = {};
         // 2.查询所有数据
         this.getTeacherList()
       },
