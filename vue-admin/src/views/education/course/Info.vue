@@ -6,20 +6,45 @@
       <el-step title="创建课程大纲"/>
       <el-step title="提交审核"/>
     </el-steps>
-    <el-form label-width="120px" class="save_item">
-      <el-form-item>
-        <el-button :disabled="saveBtnDisabled" type="primary" @click="next">
-          保存并下一步
-        </el-button>
-      </el-form-item>
-    </el-form>
+    <div class="div_course_info">
+      <el-form label-width="120px">
+        <el-form-item label="课程标题">
+          <el-input v-model="courseInfo.title" placeholder=" 示例：机器学习项目课：从基础到搭建项目视"/>
+        </el-form-item>
+        <!-- 所属分类 TODO -->
+        <!-- 课程讲师 TODO -->
+        <el-form-item label="总课时">
+          <el-input-number :min="0" v-model="courseInfo.lessonNum" controls-position="right" placeholder="课时数"/>
+        </el-form-item>
+        <!-- 课程简介 TODO -->
+        <!-- 课程封面 TODO -->
+        <el-form-item label="课程价格">
+          <el-input-number :min="0" v-model="courseInfo.price" controls-position="right" placeholder="课程价格"/>
+        </el-form-item>
+        <el-form-item class="save_item">
+          <el-button :disabled="saveBtnDisabled" type="primary" @click="next">
+            保存并下一步
+          </el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+
   </div>
 </template>
 <script>
   export default {
     data() {
       return {
-        saveBtnDisabled: false // 保存按钮是否禁用
+        saveBtnDisabled: false, // 保存按钮是否禁用
+        courseInfo: {
+          title: '',
+          subjectId: '',
+          teacherId: '',
+          lessonNum: 0,
+          description: '',
+          cover: '',
+          price: 0
+        }
       }
     },
     created() {
@@ -34,11 +59,19 @@
   }
 </script>
 
-
 <style scoped>
   .save_item {
-    margin-left: 39.5%;
+    margin: 0 auto;
+    margin-left: 39%;
     margin-top: 5%;
+  }
+
+  .div_course_info {
+    /*居中样式*/
+    margin: 0 auto;
+    width: 70%;
+    margin-left: 13%;
+    margin-top: 3%;
   }
 
 </style>
