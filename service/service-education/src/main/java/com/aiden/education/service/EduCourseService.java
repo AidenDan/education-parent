@@ -18,5 +18,5 @@ public interface EduCourseService extends IService<EduCourse> {
      *
      * @param courseInfoVO 封装添加的课程信息
      */
-    void addCourseInfo(CourseInfoVO courseInfoVO);
+    String addCourseInfo(CourseInfoVO courseInfoVO);
 }

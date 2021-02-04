@@ -32,6 +32,8 @@
   </div>
 </template>
 <script>
+  import course from "../../../api/course/course";
+
   export default {
     data() {
       return {
@@ -52,8 +54,12 @@
     },
     methods: {
       next() {
-        console.log('next')
-        this.$router.push({path: '/chapter/2'})
+        // 将填写的课程信息保存到数据库并转到下一步操作
+        course.addCourseInfo(this.courseInfo)
+          .then(response => {
+            this.$message.success("添加课程信息成功!");
+            this.$router.push({path: '/chapter/' + response.data.courseId});
+          });
       }
     }
   }

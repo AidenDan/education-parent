@@ -27,8 +27,8 @@ public class EduCourseController {
 
     @PostMapping("/addCourseInfo")
     public CommonResult addCourseInfo(@RequestBody CourseInfoVO courseInfoVO) {
-        eduCourseService.addCourseInfo(courseInfoVO);
-        return CommonResult.success();
+        String courseId = eduCourseService.addCourseInfo(courseInfoVO);
+        return CommonResult.success().data("courseId", courseId);
     }
 }
 
