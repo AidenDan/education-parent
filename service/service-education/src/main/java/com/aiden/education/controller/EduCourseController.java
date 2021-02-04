@@ -27,6 +27,7 @@ public class EduCourseController {
 
     @PostMapping("/addCourseInfo")
     public CommonResult addCourseInfo(@RequestBody CourseInfoVO courseInfoVO) {
+        // 添加一个课程信息后返回该课程的课程id
         String courseId = eduCourseService.addCourseInfo(courseInfoVO);
         return CommonResult.success().data("courseId", courseId);
     }
