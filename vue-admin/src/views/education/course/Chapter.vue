@@ -16,22 +16,33 @@
   </div>
 </template>
 <script>
+  import chapter from "../../../api/chapter/chapter";
+
   export default {
     data() {
       return {
+        courseId: '',
+        chapterInfoList: [],
         saveBtnDisabled: false // 保存按钮是否禁用
       }
     },
     created() {
-      console.log('chapter created')
+      // 页面跳转的时候获取courseId
+      this.courseId = this.$route.params.id;
+      this.getChapterInfoByCourseId();
     },
     methods: {
+      // 根据课程id获取对应的章节信息
+      getChapterInfoByCourseId() {
+        chapter.getChapterInfoByCourseId(this.courseId)
+          .then(response => {
+            this.chapterInfoList = response.data.chapterInfoList;
+          })
+      },
       previous() {
-        console.log('previous')
         this.$router.push({path: '/info/1'})
       },
       next() {
-        console.log('next')
         this.$router.push({path: '/publish/3'})
       }
     }

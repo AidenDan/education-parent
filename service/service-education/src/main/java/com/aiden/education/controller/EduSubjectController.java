@@ -6,6 +6,7 @@ import com.aiden.commonBase.exceptionHandler.EduException;
 import com.aiden.education.entity.subject.LevelOneSubject;
 import com.aiden.education.service.EduSubjectService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +31,7 @@ public class EduSubjectController {
     @Autowired
     EduSubjectService eduSubjectService;
 
+    @ApiOperation(value = "通过xlsx上传课程列表")
     @PostMapping("/uploadSubject")
     public CommonResult uploadSubject(MultipartFile file) {
         if (file == null) {
@@ -39,6 +41,7 @@ public class EduSubjectController {
         return CommonResult.success();
     }
 
+    @ApiOperation(value = "获取所有的课程列表")
     @GetMapping("/getTotalSubject")
     public CommonResult getTotalSubject() {
         List<LevelOneSubject> totalSubject = eduSubjectService.getTotalSubject();

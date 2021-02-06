@@ -4,6 +4,7 @@ import com.aiden.commenUtils.CommonResult;
 import com.aiden.education.query.vo.CourseInfoVO;
 import com.aiden.education.service.EduCourseService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,7 @@ public class EduCourseController {
     @Autowired
     EduCourseService eduCourseService;
 
+    @ApiOperation(value = "添加课程信息")
     @PostMapping("/addCourseInfo")
     public CommonResult addCourseInfo(@RequestBody CourseInfoVO courseInfoVO) {
         // 添加一个课程信息后返回该课程的课程id

@@ -33,7 +33,7 @@
         </el-form-item>
         <!-- 课程简介 -->
         <el-form-item label="课程简介">
-          <el-input v-model="courseInfo.description" placeholder="示例：机器学习项目课：从基础到搭建项目视"/>
+          <tinymce :height="300" v-model="courseInfo.description" class="tinymce-container"></tinymce>
         </el-form-item>
         <!-- 课程封面 -->
         <el-form-item label="课程封面">
@@ -63,8 +63,12 @@
   import course from "../../../api/course/course";
   import teacherApi from "../../../api/teacher/teacher";
   import subject from "../../../api/subject/subject";
+  // 导入富文本编辑器组件
+  import tinymce from "../../../components/Tinymce"
 
   export default {
+    // 注册组件
+    components: {tinymce},
     data() {
       return {
         saveBtnDisabled: false, // 保存按钮是否禁用
@@ -161,4 +165,7 @@
     margin-top: 3%;
   }
 
+  .tinymce-container {
+    line-height: 29px;
+  }
 </style>
