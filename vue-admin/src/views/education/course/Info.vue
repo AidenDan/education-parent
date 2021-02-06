@@ -36,6 +36,16 @@
           <el-input v-model="courseInfo.description" placeholder="示例：机器学习项目课：从基础到搭建项目视"/>
         </el-form-item>
         <!-- 课程封面 -->
+        <el-form-item label="课程封面">
+          <el-upload
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+            :action="BASE_API+'/oss/uploadAvatar'"
+            class="avatar-uploader">
+            <img :src="courseInfo.cover">
+          </el-upload>
+        </el-form-item>
         <el-form-item label="课程价格">
           <el-input-number :min="0" v-model="courseInfo.price" controls-position="right" placeholder="课程价格"/>
         </el-form-item>
@@ -65,9 +75,10 @@
           teacherId: '',
           lessonNum: 0,
           description: '',
-          cover: '',
+          cover: '/static/timg.jpg',
           price: 0
         },
+        BASE_API: process.env.BASE_API,
         teacherList: [], // 讲师列表
         subjectOneList: [], // 一级课程列表
         subjectTwoList: [] // 二级课程列表
@@ -80,6 +91,24 @@
       this.getLevelOneAndTwoSubject();
     },
     methods: {
+      // 调用上传之前会自动调用的方法
+      beforeAvatarUpload(file) {
+        const isJPG = file.type === 'image/jpeg'
+        const isLt2M = file.size / 1024 / 1024 < 2
+        if (!isJPG) {
+          this.$message.error('上传头像图片只能是 JPG 格式!')
+        }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!')
+        }
+        return isJPG && isLt2M
+      },
+      // 上传课程封面成功的回调函数
+      handleAvatarSuccess(response, file) {
+        console.log(response) // 上传响应
+        console.log(URL.createObjectURL(file.raw)) // base64编码
+        this.courseInfo.cover = response.data.url
+      },
       next() {
         // 将填写的课程信息保存到数据库并转到下一步操作
         course.addCourseInfo(this.courseInfo)
@@ -106,6 +135,7 @@
       getLevelTwoSubjectByLevelOneSubject(levelOneId) {
         // 先清空二级课程下拉框列表  delete是VUE关键字
         delete this.courseInfo.subjectId;
+        // this.courseInfo.subjectId = '';
         for (let j = 0; j < this.subjectOneList.length; j++) {
           if (this.subjectOneList[j].id === levelOneId) {
             this.subjectTwoList = this.subjectOneList[j].children;

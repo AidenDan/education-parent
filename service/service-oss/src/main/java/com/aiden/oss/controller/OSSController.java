@@ -26,7 +26,7 @@ public class OSSController {
     @Autowired
     OSSService ossService;
 
-    @ApiOperation("上传讲师头像")
+    @ApiOperation("上传图片")
     @PostMapping("/uploadAvatar")
     public CommonResult upLoadTeacherAvatar(MultipartFile file) {
         String url = ossService.upLoadTeacherAvatar(file);
