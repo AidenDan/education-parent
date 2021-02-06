@@ -1,6 +1,5 @@
 package com.aiden.education.controller;
 
-
 import com.aiden.commenUtils.CommonResult;
 import com.aiden.education.query.vo.CourseInfoVO;
 import com.aiden.education.service.EduCourseService;

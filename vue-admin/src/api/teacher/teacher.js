@@ -38,6 +38,13 @@ export default {
       method: 'put',
       data: teacher // post请求提交参数对象，以json格式，封装到ResponseBody中
     })
+  },
+  // 更新讲师信息
+  getAllTeacherList() {
+    return request({
+      url: `/education/edu-teacher/findAll`,
+      method: 'get',
+    })
   }
 }
 

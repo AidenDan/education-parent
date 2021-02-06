@@ -9,15 +9,33 @@
     <div class="div_course_info">
       <el-form label-width="120px">
         <el-form-item label="课程标题">
-          <el-input v-model="courseInfo.title" placeholder=" 示例：机器学习项目课：从基础到搭建项目视"/>
+          <el-input v-model="courseInfo.title" placeholder="示例：机器学习项目课：从基础到搭建项目视"/>
         </el-form-item>
-        <!-- 所属分类 TODO -->
-        <!-- 课程讲师 TODO -->
+        <!-- 所属课程分类 -->
+        <el-form-item label="课程分类">
+          <el-select v-model="courseInfo.subjectParentId" placeholder="一级课程"
+                     @change="getLevelTwoSubjectByLevelOneSubject(courseInfo.subjectParentId)">
+            <el-option v-for="subject in subjectOneList" :key="subject.id" :label="subject.title" :value="subject.id"/>
+          </el-select>
+          <el-select v-model="courseInfo.subjectId" placeholder="二级课程">
+            <el-option v-for="subject in subjectTwoList" :key="subject.id" :label="subject.title"
+                       :value="subject.id"/>
+          </el-select>
+        </el-form-item>
+        <!-- 课程讲师 -->
+        <el-form-item label="课程讲师">
+          <el-select v-model="courseInfo.teacherId" placeholder="请选择">
+            <el-option v-for="teacher in teacherList" :key="teacher.id" :label="teacher.name" :value="teacher.id"/>
+          </el-select>
+        </el-form-item>
         <el-form-item label="总课时">
           <el-input-number :min="0" v-model="courseInfo.lessonNum" controls-position="right" placeholder="课时数"/>
         </el-form-item>
-        <!-- 课程简介 TODO -->
-        <!-- 课程封面 TODO -->
+        <!-- 课程简介 -->
+        <el-form-item label="课程简介">
+          <el-input v-model="courseInfo.description" placeholder="示例：机器学习项目课：从基础到搭建项目视"/>
+        </el-form-item>
+        <!-- 课程封面 -->
         <el-form-item label="课程价格">
           <el-input-number :min="0" v-model="courseInfo.price" controls-position="right" placeholder="课程价格"/>
         </el-form-item>
@@ -33,6 +51,8 @@
 </template>
 <script>
   import course from "../../../api/course/course";
+  import teacherApi from "../../../api/teacher/teacher";
+  import subject from "../../../api/subject/subject";
 
   export default {
     data() {
@@ -40,17 +60,24 @@
         saveBtnDisabled: false, // 保存按钮是否禁用
         courseInfo: {
           title: '',
-          subjectId: '',
+          subjectId: '', //  二级分类id
+          subjectParentId: '', // 一级分类id
           teacherId: '',
           lessonNum: 0,
           description: '',
           cover: '',
           price: 0
-        }
+        },
+        teacherList: [], // 讲师列表
+        subjectOneList: [], // 一级课程列表
+        subjectTwoList: [] // 二级课程列表
       }
     },
     created() {
-      console.log('info created')
+      // 初始化讲师选择的列表
+      this.getAllTeacherList();
+      // 初始化一级课程列表
+      this.getLevelOneAndTwoSubject();
     },
     methods: {
       next() {
@@ -60,6 +87,30 @@
             this.$message.success("添加课程信息成功!");
             this.$router.push({path: '/chapter/' + response.data.courseId});
           });
+      },
+      // 查询所有的讲师列表
+      getAllTeacherList() {
+        teacherApi.getAllTeacherList()
+          .then(response => {
+            this.teacherList = response.data.itemList;
+          })
+      },
+      // 查询所有的课程列表
+      getLevelOneAndTwoSubject() {
+        subject.getTotalSubject()
+          .then(response => {
+            this.subjectOneList = response.data.totalSubject;
+          })
+      },
+      // 根据一级课程变动动态查询二级课程列表
+      getLevelTwoSubjectByLevelOneSubject(levelOneId) {
+        // 先清空二级课程下拉框列表  delete是VUE关键字
+        delete this.courseInfo.subjectId;
+        for (let j = 0; j < this.subjectOneList.length; j++) {
+          if (this.subjectOneList[j].id === levelOneId) {
+            this.subjectTwoList = this.subjectOneList[j].children;
+          }
+        }
       }
     }
   }
