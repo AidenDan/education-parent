@@ -32,5 +32,13 @@ public class EduCourseController {
         String courseId = eduCourseService.addCourseInfo(courseInfoVO);
         return CommonResult.success().data("courseId", courseId);
     }
+
+    @ApiOperation(value = "根据课程id获取课程信息")
+    @GetMapping("/getCourseInfoById/{courseId}")
+    public CommonResult getCourseInfoById(@PathVariable("courseId") String courseId) {
+        // 添加一个课程信息后返回该课程的课程id
+        CourseInfoVO courseInfoVO = eduCourseService.getCourseInfoById(courseId);
+        return CommonResult.success().data("courseInfo", courseInfoVO);
+    }
 }
 

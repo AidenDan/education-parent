@@ -56,7 +56,8 @@
           })
       },
       previous() {
-        this.$router.push({path: '/info/1'})
+        // 返回上一步数据回显
+        this.$router.push({path: '/info/' + this.$route.params.id})
       },
       next() {
         this.$router.push({path: '/publish/3'})

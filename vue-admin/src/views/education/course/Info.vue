@@ -93,8 +93,19 @@
       this.getAllTeacherList();
       // 初始化一级课程列表
       this.getLevelOneAndTwoSubject();
+      // 课程信息回显
+      if (this.$route.params && this.$route.params.id) {
+        this.getCourseInfoById(this.$route.params.id);
+      }
     },
     methods: {
+      // 根据课程id查询课程信息进行回显
+      getCourseInfoById(id) {
+        course.getCourseInfoById(id)
+          .then(response => {
+            this.courseInfo = response.data.courseInfo;
+          })
+      },
       // 调用上传之前会自动调用的方法
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg'

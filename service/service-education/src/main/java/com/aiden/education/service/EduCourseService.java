@@ -19,4 +19,19 @@ public interface EduCourseService extends IService<EduCourse> {
      * @param courseInfoVO 封装添加的课程信息
      */
     String addCourseInfo(CourseInfoVO courseInfoVO);
+
+    /**
+     * 根据课程id获取课程信息 该方法主要用于上一步中回显数据进行修改操作
+     *
+     * @param courseId 课程id
+     * @return 课程信息
+     */
+    CourseInfoVO getCourseInfoById(String courseId);
+
+    /**
+     * 更新课程信息
+     *
+     * @param courseInfoVO 封装添加的课程信息
+     */
+    String updateCourseInfo(CourseInfoVO courseInfoVO);
 }
