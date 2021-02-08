@@ -16,6 +16,15 @@ export default {
       url: `/education/edu-course/getCourseInfoById/${courseId}`,
       method: 'get',
     })
+  },
+
+  // 添加课程信息
+  updateCourseInfo(courseInfoVO) {
+    return request({
+      url: `/education/edu-course/updateCourseInfo`,
+      method: 'post',
+      data: courseInfoVO
+    })
   }
 }
 

@@ -50,7 +50,7 @@
           <el-input-number :min="0" v-model="courseInfo.price" controls-position="right" placeholder="课程价格"/>
         </el-form-item>
         <el-form-item class="save_item">
-          <el-button :disabled="saveBtnDisabled" type="primary" @click="next">
+          <el-button :disabled="saveBtnDisabled" type="primary" @click="next()">
             保存并下一步
           </el-button>
         </el-form-item>
@@ -89,9 +89,9 @@
       }
     },
     created() {
-      // 初始化讲师选择的列表
+      // 加载这个页面时初始化讲师选择的列表
       this.getAllTeacherList();
-      // 初始化一级课程列表
+      // 加载这个页面时初始化一级课程列表
       this.getLevelOneAndTwoSubject();
       // 课程信息回显
       if (this.$route.params && this.$route.params.id) {
@@ -104,6 +104,15 @@
         course.getCourseInfoById(id)
           .then(response => {
             this.courseInfo = response.data.courseInfo;
+
+            // 注意二级课程id是根据一级课程的变动而动态改变的
+            // 这里回显数据没有去改动一级课程所以默认没有去获取对应的二级课程
+            // 需要手动去获取二级课程
+            for (let j = 0; j < this.subjectOneList.length; j++) {
+              if (this.subjectOneList[j].id === this.courseInfo.subjectParentId) {
+                this.subjectTwoList = this.subjectOneList[j].children;
+              }
+            }
           })
       },
       // 调用上传之前会自动调用的方法
@@ -125,12 +134,20 @@
         this.courseInfo.cover = response.data.url
       },
       next() {
-        // 将填写的课程信息保存到数据库并转到下一步操作
-        course.addCourseInfo(this.courseInfo)
-          .then(response => {
-            this.$message.success("添加课程信息成功!");
-            this.$router.push({path: '/chapter/' + response.data.courseId});
-          });
+        if (this.$route.params && this.$route.params.id) {
+          course.updateCourseInfo(this.courseInfo)
+            .then(response => {
+              this.$message.success("更新课程信息成功!");
+              this.$router.push({path: '/chapter/' + response.data.courseId});
+            })
+        } else {
+          // 将填写的课程信息保存到数据库并转到下一步操作
+          course.addCourseInfo(this.courseInfo)
+            .then(response => {
+              this.$message.success("添加课程信息成功!");
+              this.$router.push({path: '/chapter/' + response.data.courseId});
+            });
+        }
       },
       // 查询所有的讲师列表
       getAllTeacherList() {
