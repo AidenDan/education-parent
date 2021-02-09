@@ -2,6 +2,7 @@ package com.aiden.education.service;
 
 import com.aiden.education.entity.EduCourse;
 import com.aiden.education.query.vo.CourseInfoVO;
+import com.aiden.education.query.vo.PublishCourseInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -34,4 +35,19 @@ public interface EduCourseService extends IService<EduCourse> {
      * @param courseInfoVO 封装添加的课程信息
      */
     String updateCourseInfo(CourseInfoVO courseInfoVO);
+
+    /**
+     * 最终要发布的课程信息
+     *
+     * @param courseId 课程id
+     * @return PublishCourseInfo
+     */
+    PublishCourseInfo publishCourseInfo(String courseId);
+
+    /**
+     * 最终发布该课程
+     *
+     * @param courseId 课程id
+     */
+    void finalPublish(String courseId);
 }

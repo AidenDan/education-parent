@@ -5,6 +5,7 @@ import com.aiden.education.entity.EduCourse;
 import com.aiden.education.entity.EduCourseDescription;
 import com.aiden.education.mapper.EduCourseMapper;
 import com.aiden.education.query.vo.CourseInfoVO;
+import com.aiden.education.query.vo.PublishCourseInfo;
 import com.aiden.education.service.EduCourseDescriptionService;
 import com.aiden.education.service.EduCourseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -100,5 +101,18 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         redisTemplate.opsForHash().put(courseInfoVO.getId(), "eduCourse", eduCourse);
         redisTemplate.opsForHash().put(courseInfoVO.getId(), "eduCourseDescription", eduCourseDescription);
         return courseInfoVO.getId();
+    }
+
+    @Override
+    public PublishCourseInfo publishCourseInfo(String courseId) {
+        return baseMapper.getPublishCourseInfo(courseId);
+    }
+
+    @Override
+    public void finalPublish(String courseId) {
+        EduCourse eduCourse = new EduCourse();
+        eduCourse.setId(courseId);
+        eduCourse.setStatus("Normal");
+        this.updateById(eduCourse);
     }
 }

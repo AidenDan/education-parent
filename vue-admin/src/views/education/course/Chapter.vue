@@ -264,7 +264,7 @@
         this.$router.push({path: '/info/' + this.$route.params.id})
       },
       next() {
-        this.$router.push({path: '/publish/3'})
+        this.$router.push({path: '/publish/' + this.$route.params.id})
       }
     }
   }

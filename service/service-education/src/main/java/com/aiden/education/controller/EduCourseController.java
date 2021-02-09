@@ -2,6 +2,7 @@ package com.aiden.education.controller;
 
 import com.aiden.commenUtils.CommonResult;
 import com.aiden.education.query.vo.CourseInfoVO;
+import com.aiden.education.query.vo.PublishCourseInfo;
 import com.aiden.education.service.EduCourseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -47,6 +48,21 @@ public class EduCourseController {
         // 添加一个课程信息后返回该课程的课程id
         String courseId = eduCourseService.updateCourseInfo(courseInfoVO);
         return CommonResult.success().data("courseId", courseId);
+    }
+
+    @ApiOperation(value = "查询最终要发布的课程信息")
+    @GetMapping("/publishCourseInfo/{courseId}")
+    public CommonResult publishCourseInfo(@PathVariable("courseId") String courseId) {
+        PublishCourseInfo publishCourseInfo = eduCourseService.publishCourseInfo(courseId);
+        return CommonResult.success().data("publishCourseInfo", publishCourseInfo);
+    }
+
+    @ApiOperation(value = "发布课程信息")
+    @PostMapping("/finalPublish/{courseId}")
+    public CommonResult finalPublish(@PathVariable("courseId") String courseId) {
+        // 添加一个课程信息后返回该课程的课程id
+        eduCourseService.finalPublish(courseId);
+        return CommonResult.success();
     }
 }
 
