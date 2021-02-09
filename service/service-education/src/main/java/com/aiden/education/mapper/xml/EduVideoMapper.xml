@@ -2,4 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.aiden.education.mapper.EduVideoMapper">
 
+    <select id="isExistVideo" resultType="java.lang.Integer">
+        select count(*)
+        from edu_video
+        where chapter_id = #{chapterId}
+        limit 1
+    </select>
 </mapper>

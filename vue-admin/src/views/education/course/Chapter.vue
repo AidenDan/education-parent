@@ -6,6 +6,10 @@
       <el-step title="创建课程大纲"/>
       <el-step title="提交审核"/>
     </el-steps>
+    <h2 style="text-align: center;">
+      <el-button type="text" @click="dialogChapterFormVisible=true">添加章节</el-button>
+    </h2>
+
     <div class="chapter_container">
       <el-form label-width="120px">
         <el-form-item>
@@ -21,13 +25,32 @@
           </ul>
         </el-form-item>
 
-        <el-form-item class="save_item">
-          <el-button @click="previous">上一步</el-button>
-          <el-button :disabled="saveBtnDisabled" type="primary" @click="next">下一步
-          </el-button>
-        </el-form-item>
+        <h2 style="text-align: center;">
+          <el-form-item style="margin-left: 5%">
+            <el-button @click="previous">上一步</el-button>
+            <el-button :disabled="saveBtnDisabled" type="primary" @click="next">下一步
+            </el-button>
+          </el-form-item>
+        </h2>
+
       </el-form>
     </div>
+
+    <!-- 添加和修改章节表单 -->
+    <el-dialog :visible.sync="dialogChapterFormVisible" title="添加章节">
+      <el-form :model="chapter" label-width="120px">
+        <el-form-item label="章节标题">
+          <el-input v-model="chapter.title"/>
+        </el-form-item>
+        <el-form-item label="章节排序">
+          <el-input-number v-model="chapter.sort" :min="0" controlsposition="right"/>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogChapterFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="saveOrUpdate">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -36,6 +59,11 @@
   export default {
     data() {
       return {
+        chapter: {
+          title: '',
+          sort: 0
+        },
+        dialogChapterFormVisible: false,
         courseId: '',
         chapterInfoList: [],
         saveBtnDisabled: false // 保存按钮是否禁用
@@ -47,6 +75,9 @@
       this.getChapterInfoByCourseId();
     },
     methods: {
+      saveOrUpdate() {
+        this.dialogChapterFormVisible = false
+      },
       // 根据课程id获取对应的章节信息
       getChapterInfoByCourseId() {
         chapter.getChapterInfoByCourseId(this.courseId)
