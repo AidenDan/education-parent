@@ -88,6 +88,27 @@
         subjectTwoList: [] // 二级课程列表
       }
     },
+    watch: {
+      // 监听路由地址变化
+      $route(from, to) {
+        // 如左侧的菜单栏点击进入courseInfo组件，那么应该要重置之前默认的信息
+        // 如果是由上一步操作跳转到课程信息组件，那么是含有课程id的
+        if (this.$route.params && this.$route.params.id) {
+          this.getCourseInfoById(this.$route.params.id);
+        } else {
+          this.courseInfo = {
+            title: '',
+            subjectId: '', //  二级分类id
+            subjectParentId: '', // 一级分类id
+            teacherId: '',
+            lessonNum: 0,
+            description: '',
+            cover: '/static/timg.jpg',
+            price: 0
+          }
+        }
+      }
+    },
     created() {
       // 加载这个页面时初始化讲师选择的列表
       this.getAllTeacherList();
