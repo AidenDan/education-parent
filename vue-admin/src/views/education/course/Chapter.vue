@@ -7,7 +7,7 @@
       <el-step title="提交审核"/>
     </el-steps>
     <h2 style="text-align: center;">
-      <el-button type="text" @click="dialogChapterFormVisible=true">添加章节</el-button>
+      <el-button type="text" @click="openDialog()">添加章节</el-button>
     </h2>
 
     <div class="chapter_container">
@@ -15,10 +15,21 @@
         <el-form-item>
           <ul class="chapterList">
             <li v-for="chapter in chapterInfoList" :key="chapter.id">
-              <p>{{chapter.title}}</p>
+              <p>{{chapter.title}}
+                <span class="acts">
+                <el-button type="text">添加课时</el-button>
+                <el-button type="text" @click="openEditChapterDialog(chapter.id)">编辑</el-button>
+                <el-button type="text">删除</el-button>
+                </span>
+              </p>
               <ul class="videoList">
                 <li v-for="video  in chapter.children" :key="video.id">
-                  <p>{{video.title}}</p>
+                  <p>{{video.title}}
+                    <span class="acts">
+                    <el-button type="text">编辑</el-button>
+                    <el-button type="text">删除</el-button>
+                    </span>
+                  </p>
                 </li>
               </ul>
             </li>
@@ -75,8 +86,55 @@
       this.getChapterInfoByCourseId();
     },
     methods: {
+      // 打开添加章的对话框
+      openDialog() {
+        this.dialogChapterFormVisible = true;
+        // 打开对话框时要重置数据
+        this.chapter.title = '';
+        this.chapter.sort = 0;
+      },
+      // 打开编辑章信息的对话框
+      openEditChapterDialog(id) {
+        // 打开对话框
+        this.dialogChapterFormVisible = true;
+        // 数据要回显
+        chapter.getChapterInfo(id)
+          .then(response => {
+            this.chapter = response.data.chapterInfo;
+          })
+      },
       saveOrUpdate() {
-        this.dialogChapterFormVisible = false
+        // 保存后才有章id
+        if (this.chapter.id) {
+          this.updateChapter();
+        } else {
+          this.saveChapter();
+        }
+      },
+      // 添加章信息
+      saveChapter() {
+        this.chapter.courseId = this.courseId;
+        chapter.addChapterInfo(this.chapter)
+          .then(response => {
+            // 关闭对话框
+            this.dialogChapterFormVisible = false;
+            // 给出提示信息
+            this.$message.success("添加章信息成功!");
+            // 重新加载章节列表
+            this.getChapterInfoByCourseId();
+          })
+      },
+      // 修改章信息
+      updateChapter() {
+        chapter.updateChapterInfo(this.chapter)
+          .then(response => {
+            // 关闭对话框
+            this.dialogChapterFormVisible = false;
+            // 给出提示信息
+            this.$message.success("修改章信息成功!");
+            // 重新加载章节列表
+            this.getChapterInfoByCourseId();
+          })
       },
       // 根据课程id获取对应的章节信息
       getChapterInfoByCourseId() {

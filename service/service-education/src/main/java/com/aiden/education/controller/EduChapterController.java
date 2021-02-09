@@ -57,7 +57,7 @@ public class EduChapterController {
     }
 
     @ApiOperation(value = "查询课程章信息")
-    @DeleteMapping("/getChapterInfo/{id}")
+    @GetMapping("/getChapterInfo/{id}")
     public CommonResult getChapterInfo(@PathVariable("id") String id) {
         EduChapter chapterInfo = chapterService.getChapterInfo(id);
         return CommonResult.success().data("chapterInfo", chapterInfo);
