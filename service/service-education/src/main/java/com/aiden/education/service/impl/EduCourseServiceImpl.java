@@ -115,6 +115,12 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         eduCourseDescription.setDescription(courseInfoVO.getDescription());
         redisTemplate.opsForHash().put(courseInfoVO.getId(), "eduCourse", eduCourse);
         redisTemplate.opsForHash().put(courseInfoVO.getId(), "eduCourseDescription", eduCourseDescription);
+
+        // 更新数据库
+        // 更新 EduCourse
+        this.updateById(eduCourse);
+        // 更新课程描述
+        eduCourseDescriptionService.updateById(eduCourseDescription);
         return courseInfoVO.getId();
     }
 

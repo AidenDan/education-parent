@@ -51,6 +51,7 @@
         LEFT JOIN edu_teacher et
         ON ec.teacher_id = et.id
         <where>
+            ec.is_deleted=0
             <if test="courseQuery.title != null">
                 and title like concat('%', #{courseQuery.title}, '%')
             </if>

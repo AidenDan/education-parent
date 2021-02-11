@@ -90,7 +90,7 @@
     },
     watch: {
       // 监听路由地址变化
-      $route(from, to) {
+      $route(to, from) {
         // 如左侧的菜单栏点击进入courseInfo组件，那么应该要重置之前默认的信息
         // 如果是由上一步操作跳转到课程信息组件，那么是含有课程id的
         if (this.$route.params && this.$route.params.id) {
