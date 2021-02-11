@@ -1,7 +1,7 @@
-package com.aiden.oss.controller;
+package com.aiden.vod.controller;
 
 import com.aiden.commenUtils.CommonResult;
-import com.aiden.oss.service.OSSService;
+import com.aiden.vod.service.VodService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,21 +15,21 @@ import org.springframework.web.multipart.MultipartFile;
  * @author Aiden
  * @version 1.0
  * @description
- * @date 2021-1-30 12:57:56
+ * @date 2021-2-11 15:38:53
  */
 
-@Api(description = "oss服务")
+@Api(description = "视屏上传接口")
 @RestController
-@RequestMapping("/oss")
 @CrossOrigin
-public class OSSController {
+@RequestMapping("/eduvod")
+public class VodController {
     @Autowired
-    OSSService ossService;
+    VodService videoService;
 
-    @ApiOperation(value = "上传图片")
-    @PostMapping("/uploadAvatar")
-    public CommonResult upLoadTeacherAvatar(MultipartFile file) {
-        String url = ossService.upLoadTeacherAvatar(file);
-        return CommonResult.success().data("url", url);
+    @ApiOperation(value = "上传视屏")
+    @PostMapping("/uploadVideo")
+    public CommonResult uploadVideo(MultipartFile file) {
+        String videoId = videoService.uploadVideo(file);
+        return CommonResult.success().data("videoId", videoId);
     }
 }
