@@ -2,9 +2,13 @@ package com.aiden.vod.service.impl;
 
 import com.aiden.commonBase.exceptionHandler.EduException;
 import com.aiden.vod.service.VodService;
+import com.aiden.vod.utils.AliVideoClientUtils;
 import com.aliyun.vod.upload.impl.UploadVideoImpl;
 import com.aliyun.vod.upload.req.UploadStreamRequest;
 import com.aliyun.vod.upload.resp.UploadStreamResponse;
+import com.aliyuncs.DefaultAcsClient;
+import com.aliyuncs.exceptions.ClientException;
+import com.aliyuncs.vod.model.v20170321.DeleteVideoRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -55,7 +59,23 @@ public class VideoServiceImpl implements VodService {
             }
             return videoId;
         } catch (IOException e) {
-            throw new EduException(20001, "guli vod 服务上传失败");
+            throw new EduException(20001, "视频服务上传失败");
+        }
+    }
+
+    @Override
+    public void deleteVideoByVideoId(String videoId) {
+        // 获取客户端
+        DefaultAcsClient client = AliVideoClientUtils.initVodClient(keyId, keySecret);
+        // 创建删除对象
+        DeleteVideoRequest deleteVideoRequest = new DeleteVideoRequest();
+        // 设置视频id，根据id进行删除
+        deleteVideoRequest.setVideoIds(videoId);
+        // 客户端进行删除
+        try {
+            client.getAcsResponse(deleteVideoRequest);
+        } catch (ClientException e) {
+            throw new EduException(20001, "删除视频失败!");
         }
     }
 }

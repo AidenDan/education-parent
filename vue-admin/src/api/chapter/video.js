@@ -31,5 +31,12 @@ export default {
       method: 'get',
     })
   },
+  // 根据视频id删除视频
+  deleteVideoByVideoId(videoId) {
+    return request({
+      url: `/eduvod/deleteVideoByVideoId/${videoId}`,
+      method: 'delete',
+    })
+  }
 }
 

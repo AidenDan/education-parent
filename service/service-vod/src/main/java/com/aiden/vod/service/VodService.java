@@ -17,4 +17,11 @@ public interface VodService {
      * @return 阿里云中视屏id
      */
     String uploadVideo(MultipartFile file);
+
+    /**
+     * 根据videoId删除视屏
+     *
+     * @param videoId 视频id
+     */
+    void deleteVideoByVideoId(String videoId);
 }

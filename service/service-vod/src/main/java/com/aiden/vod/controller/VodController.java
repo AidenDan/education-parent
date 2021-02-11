@@ -5,10 +5,7 @@ import com.aiden.vod.service.VodService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -31,5 +28,12 @@ public class VodController {
     public CommonResult uploadVideo(MultipartFile file) {
         String videoId = videoService.uploadVideo(file);
         return CommonResult.success().data("videoId", videoId);
+    }
+
+    @ApiOperation(value = "删除视频")
+    @DeleteMapping("/deleteVideoByVideoId/{videoId}")
+    public CommonResult deleteVideoByVideoId(@PathVariable("videoId") String videoId) {
+        videoService.deleteVideoByVideoId(videoId);
+        return CommonResult.success();
     }
 }

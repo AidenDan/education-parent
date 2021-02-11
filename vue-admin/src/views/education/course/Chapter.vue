@@ -79,7 +79,26 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="上传视频">
-          <!-- TODO -->
+          <el-upload
+            :on-success="handleVodUploadSuccess"
+            :on-remove="handleVodRemove"
+            :before-remove="beforeVodRemove"
+            :on-exceed="handleUploadExceed"
+            :file-list="fileList"
+            :action="BASE_API+'/eduvod/uploadVideo'"
+            :limit="1"
+            class="upload-demo">
+            <el-button size="small" type="primary">上传视频</el-button>
+            <el-tooltip placement="right-end">
+              <div slot="content">最大支持1G，<br>
+                支持3GP、ASF、AVI、DAT、DV、FLV、F4V、<br>
+                GIF、M2T、M4V、MJ2、MJPEG、MKV、MOV、MP4、<br>
+                MPE、MPG、MPEG、MTS、OGG、QT、RM、RMVB、<br>
+                SWF、TS、VOB、WMV、WEBM 等视频格式上传
+              </div>
+              <i class="el-icon-question"/>
+            </el-tooltip>
+          </el-upload>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -111,8 +130,13 @@
         saveVideoBtnDisabled: false,
         video: {
           sort: 0,
-          isFree: true
-        }
+          isFree: true,
+          videoSourceId: '',
+          videoOriginalName: ''
+        },
+        BASE_API: process.env.BASE_API,
+        fileList: []
+
       }
     },
     created() {
@@ -121,6 +145,34 @@
       this.getChapterInfoByCourseId();
     },
     methods: {
+      // 上传视屏成功的回调方法
+      handleVodUploadSuccess(response, file, fileList) {
+        // 把视屏id和视屏名称入库
+        this.video.videoSourceId = response.data.videoId;
+        // 获取文件名称
+        this.video.videoOriginalName = file.name;
+      },
+      // 点击确定删除视屏后执行的方法
+      handleVodRemove() {
+        // 删除服务器中对应的视屏
+        video.deleteVideoByVideoId(this.video.videoSourceId)
+          .then(response => {
+            this.$message.success("删除成功!");
+            // 将显示的视频列表清空
+            this.fileList = [];
+            // 将之前上传初始化的videoSourceId videoOriginalName清空
+            this.video.videoSourceId = '';
+            this.video.videoOriginalName = '';
+          })
+      },
+      // 删除之前执行的方法 点击X执行
+      beforeVodRemove(file, fileList) {
+        return this.$confirm(`确定移除 ${file.name}？`);
+      },
+      // 上传的视屏过多执行的方法
+      handleUploadExceed(file, fileList) {
+        this.$message.warning('想要重新上传视频，请先删除已上传的视频')
+      },
       // 添加小节信息
       openAddXChapterDialog(chapterId) {
         // 先将form数据重置
@@ -128,6 +180,7 @@
         this.video.title = '';
         this.video.isFree = true;
         this.dialogVideoFormVisible = true;
+        this.fileList = [];
         // 添加小节时需要这两个参数
         this.video.chapterId = chapterId;
         this.video.courseId = this.courseId;
