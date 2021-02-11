@@ -17,4 +17,50 @@
         WHERE ec.id = #{courseId}
         LIMIT 1
     </select>
+
+    <resultMap id="courseMap" type="com.aiden.education.query.vo.CourseInfoDO">
+        <!--property: 实体类中的属性    column:数据库中的字段-->
+        <!--数据库中的一个列 映射成数据库中的字段-->
+        <result property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="price" column="price"/>
+        <result property="lessonNum" column="lesson_num"/>
+        <result property="buyCount" column="buy_count"/>
+        <result property="viewCount" column="view_count"/>
+        <result property="status" column="status"/>
+        <result property="name" column="name"/>
+
+    </resultMap>
+
+    <!-- 用来记录分页查询时的所有数据量，避免出现分页查询时需要查询两次 -->
+    <resultMap type="java.lang.Integer" id="total">
+        <result column="total"/>
+    </resultMap>
+
+    <!--SELECT SQL_CALC_FOUND_ROWS, FOUND_ROWS()搭配使用同时查询出所有的记录数目-->
+    <select id="getCourseListPage" resultMap="courseMap,total">
+        SELECT SQL_CALC_FOUND_ROWS ec.id,
+        ec.title,
+        ec.price,
+        ec.lesson_num,
+        ec.buy_count,
+        ec.view_count,
+        ec.status,
+        et.name
+        FROM edu_course ec
+        LEFT JOIN edu_teacher et
+        ON ec.teacher_id = et.id
+        <where>
+            <if test="courseQuery.title != null">
+                and title like concat('%', #{courseQuery.title}, '%')
+            </if>
+
+            <if test="courseQuery.status != null">
+                and status=#{courseQuery.status}
+            </if>
+        </where>
+        ORDER BY ec.gmt_create DESC LIMIT ${(current-1)*limit},#{limit};
+
+        SELECT FOUND_ROWS() AS total;
+    </select>
 </mapper>

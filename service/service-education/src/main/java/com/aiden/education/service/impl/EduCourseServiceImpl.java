@@ -1,13 +1,18 @@
 package com.aiden.education.service.impl;
 
 import com.aiden.commonBase.exceptionHandler.EduException;
-import com.aiden.education.entity.EduCourse;
-import com.aiden.education.entity.EduCourseDescription;
+import com.aiden.education.entity.*;
 import com.aiden.education.mapper.EduCourseMapper;
+import com.aiden.education.query.CourseQuery;
+import com.aiden.education.query.vo.CourseInfoDO;
 import com.aiden.education.query.vo.CourseInfoVO;
 import com.aiden.education.query.vo.PublishCourseInfo;
+import com.aiden.education.service.EduChapterService;
 import com.aiden.education.service.EduCourseDescriptionService;
 import com.aiden.education.service.EduCourseService;
+import com.aiden.education.service.EduVideoService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +20,11 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -32,6 +41,12 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     EduCourseDescriptionService eduCourseDescriptionService;
     @Autowired
     RedisTemplate<String, Object> redisTemplate;
+    @Autowired
+    EduChapterService eduChapterService;
+    @Autowired
+    EduVideoService eduVideoService;
+    @Autowired
+    EduCourseMapper eduCourseMapper;
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
@@ -114,5 +129,36 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         eduCourse.setId(courseId);
         eduCourse.setStatus("Normal");
         this.updateById(eduCourse);
+    }
+
+    @Override
+    public Map<String, Object> pageTeacher(long current, long limit, CourseQuery courseQuery) {
+        List<Object> list = baseMapper.getCourseListPage(current, limit, courseQuery);
+        // 当前结果集
+        List<CourseInfoDO> courseList = (List<CourseInfoDO>) list.get(0);
+        // 总数据量
+        Integer total = ((List<Integer>) list.get(1)).get(0);
+
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("total", total);
+        resultMap.put("rows", courseList);
+        return resultMap;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @Override
+    public void deleteCourseById(String courseId) {
+        // 依次删除课程表、描述表、章表、小节表
+        this.removeById(courseId);
+
+        eduCourseDescriptionService.removeById(courseId);
+
+        QueryWrapper<EduChapter> chapterWrapper = new QueryWrapper<>();
+        chapterWrapper.eq("course_id", courseId);
+        eduChapterService.remove(chapterWrapper);
+
+        QueryWrapper<EduVideo> videoWrapper = new QueryWrapper<>();
+        videoWrapper.eq("course_id", courseId);
+        eduVideoService.remove(videoWrapper);
     }
 }

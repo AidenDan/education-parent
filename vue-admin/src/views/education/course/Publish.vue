@@ -17,8 +17,10 @@
       </div>
     </div>
     <div>
-      <el-button @click="previous">返回修改</el-button>
-      <el-button :disabled="saveBtnDisabled" type="primary" @click="publish">发布课程</el-button>
+      <h2 style="text-align: center;">
+        <el-button @click="previous">返回修改</el-button>
+        <el-button :disabled="saveBtnDisabled" type="primary" @click="publish">发布课程</el-button>
+      </h2>
     </div>
   </div>
 </template>
@@ -64,12 +66,13 @@
 
 <style scoped>
   .ccInfo {
+    width: 80%;
     background: #f5f5f5;
     padding: 20px;
     overflow: hidden;
     border: 1px dashed #DDD;
-    margin-bottom: 40px;
     position: relative;
+    margin: 20px auto 40px;
   }
 
   .ccInfo img {

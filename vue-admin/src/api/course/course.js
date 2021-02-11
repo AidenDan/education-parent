@@ -35,10 +35,25 @@ export default {
     })
   },
   // 最终发布课程信息
-  finalPublish(courseId){
+  finalPublish(courseId) {
     return request({
       url: `/education/edu-course/finalPublish/${courseId}`,
       method: 'post',
+    })
+  },
+  // 按条件分页查询所有的数据
+  getCourseList(current, limit, courseQuery) {
+    return request({
+      url: `/education/edu-course/pageCondition/${current}/${limit}`,
+      method: 'post',
+      data: courseQuery // post请求提交参数对象，以json格式，封装到ResponseBody中
+    })
+  },
+  // 删除课程信息
+  deleteCourseById(courseId) {
+    return request({
+      url: `/education/edu-course/deleteCourseById/${courseId}`,
+      method: 'delete',
     })
   }
 }

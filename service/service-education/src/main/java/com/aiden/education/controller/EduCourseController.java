@@ -1,6 +1,8 @@
 package com.aiden.education.controller;
 
 import com.aiden.commenUtils.CommonResult;
+import com.aiden.education.query.CourseQuery;
+import com.aiden.education.query.TeacherQuery;
 import com.aiden.education.query.vo.CourseInfoVO;
 import com.aiden.education.query.vo.PublishCourseInfo;
 import com.aiden.education.service.EduCourseService;
@@ -8,6 +10,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -62,6 +66,21 @@ public class EduCourseController {
     public CommonResult finalPublish(@PathVariable("courseId") String courseId) {
         // 添加一个课程信息后返回该课程的课程id
         eduCourseService.finalPublish(courseId);
+        return CommonResult.success();
+    }
+
+    // 分页查询课程，查询到的数据都封装Page中
+    @ApiOperation(value = "按照条件分页查询课程")
+    @PostMapping("/pageCondition/{current}/{limit}")
+    public CommonResult pageCondition(@PathVariable("current") long current, @PathVariable("limit") long limit, @RequestBody CourseQuery courseQuery) {
+        Map<String, Object> resultMap = eduCourseService.pageTeacher(current, limit, courseQuery);
+        return CommonResult.success().data(resultMap);
+    }
+
+    @ApiOperation(value = "按照课程id删除课程")
+    @DeleteMapping("/deleteCourseById/{courseId}")
+    public CommonResult deleteCourseById(@PathVariable("courseId") String courseId) {
+        eduCourseService.deleteCourseById(courseId);
         return CommonResult.success();
     }
 }

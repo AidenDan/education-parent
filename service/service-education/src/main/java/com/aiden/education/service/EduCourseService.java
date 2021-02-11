@@ -1,9 +1,12 @@
 package com.aiden.education.service;
 
 import com.aiden.education.entity.EduCourse;
+import com.aiden.education.query.CourseQuery;
 import com.aiden.education.query.vo.CourseInfoVO;
 import com.aiden.education.query.vo.PublishCourseInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -50,4 +53,21 @@ public interface EduCourseService extends IService<EduCourse> {
      * @param courseId 课程id
      */
     void finalPublish(String courseId);
+
+    /**
+     * 分页查询课程
+     *
+     * @param current     当前页
+     * @param limit       条数
+     * @param courseQuery 查询条件
+     * @return
+     */
+    Map<String, Object> pageTeacher(long current, long limit, CourseQuery courseQuery);
+
+    /**
+     * 根据课程id删除课程信息
+     *
+     * @param courseId 课程id
+     */
+    void deleteCourseById(String courseId);
 }
