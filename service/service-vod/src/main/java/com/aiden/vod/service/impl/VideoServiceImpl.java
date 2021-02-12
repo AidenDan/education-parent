@@ -1,6 +1,7 @@
 package com.aiden.vod.service.impl;
 
-import com.aiden.commonBase.exceptionHandler.EduException;
+//import com.aiden.commonBase.exceptionHandler.EduException;
+
 import com.aiden.vod.service.VodService;
 import com.aiden.vod.utils.AliVideoClientUtils;
 import com.aliyun.vod.upload.impl.UploadVideoImpl;
@@ -9,9 +10,12 @@ import com.aliyun.vod.upload.resp.UploadStreamResponse;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.vod.model.v20170321.DeleteVideoRequest;
+import com.codingapi.txlcn.tc.annotation.LcnTransaction;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -54,15 +58,17 @@ public class VideoServiceImpl implements VodService {
                 String errorMessage = "阿里云上传错误：" + "code：" + response.getCode() + ", message：" + response.getMessage();
                 log.warn(errorMessage);
                 if (StringUtils.isEmpty(videoId)) {
-                    throw new EduException(20001, errorMessage);
+                    throw new RuntimeException(errorMessage);
                 }
             }
             return videoId;
         } catch (IOException e) {
-            throw new EduException(20001, "视频服务上传失败");
+            throw new RuntimeException("视频服务上传失败");
         }
     }
 
+    //    @Transactional(propagation = Propagation.REQUIRED)
+//    @LcnTransaction
     @Override
     public void deleteVideoByVideoId(String videoId) {
         // 获取客户端
@@ -75,7 +81,7 @@ public class VideoServiceImpl implements VodService {
         try {
             client.getAcsResponse(deleteVideoRequest);
         } catch (ClientException e) {
-            throw new EduException(20001, "删除视频失败!");
+            throw new RuntimeException("删除视频失败!");
         }
     }
 }

@@ -1,7 +1,8 @@
 package com.aiden.oss.service.impl;
 
-import com.aiden.commonBase.exceptionHandler.EduException;
-import com.aiden.commonBase.exceptionHandler.GlobalExceptionHandler;
+//import com.aiden.commonBase.exceptionHandler.EduException;
+//import com.aiden.commonBase.exceptionHandler.GlobalExceptionHandler;
+
 import com.aiden.oss.service.OSSService;
 import com.aiden.oss.utils.ConstantPropertiesUtils;
 import com.aliyun.oss.OSS;
@@ -60,7 +61,7 @@ public class OSSServiceImpl implements OSSService {
             //获取头像的url地址
             uploadUrl = "http://" + bucketName + "." + endPoint + "/" + fileUrl;
         } catch (IOException e) {
-            throw new EduException(20001, "上传头像失败");
+//            throw new EduException(20001, "上传头像失败");
         }
         return uploadUrl;
     }

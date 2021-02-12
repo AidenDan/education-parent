@@ -1,6 +1,8 @@
 package com.aiden.education;
 
+import com.codingapi.txlcn.tc.config.EnableDistributedTransaction;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
@@ -13,6 +15,7 @@ import org.springframework.context.annotation.ComponentScan;
  * @date 2021-1-11 20:16:32
  */
 
+@EnableDistributedTransaction
 @EnableFeignClients  // 开启Feign客户端调用支持 微服务的调用方才加
 @EnableDiscoveryClient  // 开启注册中心支持
 @SpringBootApplication
