@@ -30,28 +30,28 @@ public class EduVideoController {
     @ApiOperation(value = "添加课程小节信息")
     @PostMapping("/addXChapterInfo")
     public CommonResult addXChapterInfo(@RequestBody EduVideo eduVideo) {
-        eduVideoService.save(eduVideo);
+        eduVideoService.addXChapterInfo(eduVideo);
         return CommonResult.success();
     }
 
     @ApiOperation(value = "修改课程小节信息")
     @PutMapping("/updateXChapterInfo")
     public CommonResult updateXChapterInfo(@RequestBody EduVideo eduVideo) {
-        eduVideoService.updateById(eduVideo);
+        eduVideoService.updateXChapterInfo(eduVideo);
         return CommonResult.success();
     }
 
     @ApiOperation(value = "查询课程小节信息")
     @GetMapping("/getXChapterInfo/{id}")
     public CommonResult getXChapterInfo(@PathVariable("id") String id) {
-        EduVideo eduVideo = eduVideoService.getById(id);
+        EduVideo eduVideo = eduVideoService.getXChapterInfo(id);
         return CommonResult.success().data("eduVideo", eduVideo);
     }
 
     @ApiOperation(value = "删除课程小节信息")
     @DeleteMapping("/deleteXChapterInfo/{id}")
     public CommonResult deleteXChapterInfo(@PathVariable("id") String id) {
-        eduVideoService.removeById(id);
+        eduVideoService.deleteXChapterInfo(id);
         return CommonResult.success();
     }
 }
