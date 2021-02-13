@@ -1,8 +1,10 @@
 package com.aiden.education.service.impl;
 
-import com.aiden.commonBase.exceptionHandler.EduException;
+import com.aiden.exceptionHandler.EduException;
 import com.aiden.education.entity.*;
+import com.aiden.education.feignClient.VodClient;
 import com.aiden.education.mapper.EduCourseMapper;
+import com.aiden.education.mapper.EduVideoMapper;
 import com.aiden.education.query.CourseQuery;
 import com.aiden.education.query.vo.CourseInfoDO;
 import com.aiden.education.query.vo.CourseInfoVO;
@@ -11,6 +13,7 @@ import com.aiden.education.service.EduChapterService;
 import com.aiden.education.service.EduCourseDescriptionService;
 import com.aiden.education.service.EduCourseService;
 import com.aiden.education.service.EduVideoService;
+import com.aiden.exceptionHandler.EduException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -26,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -47,6 +51,10 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     EduVideoService eduVideoService;
     @Autowired
     EduCourseMapper eduCourseMapper;
+    @Autowired
+    EduVideoMapper eduVideoMapper;
+    @Autowired
+    VodClient vodClient;
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
@@ -154,8 +162,16 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public void deleteCourseById(String courseId) {
-        // 依次删除课程表、描述表、章表、小节表
-        this.removeById(courseId);
+        // 先根据课程id查询出该课程下的所有小节videoId
+        List<String> videoIdList = eduVideoMapper.getVideoSourceIdListByCourseId(courseId);
+        // 调用微服务删除视频
+        if (!videoIdList.isEmpty()) {
+            vodClient.deleteVideoByBatchVideoId(videoIdList);
+        }
+
+        QueryWrapper<EduVideo> videoWrapper = new QueryWrapper<>();
+        videoWrapper.eq("course_id", courseId);
+        eduVideoService.remove(videoWrapper);
 
         eduCourseDescriptionService.removeById(courseId);
 
@@ -163,8 +179,6 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         chapterWrapper.eq("course_id", courseId);
         eduChapterService.remove(chapterWrapper);
 
-        QueryWrapper<EduVideo> videoWrapper = new QueryWrapper<>();
-        videoWrapper.eq("course_id", courseId);
-        eduVideoService.remove(videoWrapper);
+        this.removeById(courseId);
     }
 }

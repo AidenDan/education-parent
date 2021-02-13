@@ -2,7 +2,7 @@ package com.aiden.education.controller;
 
 
 import com.aiden.commenUtils.CommonResult;
-import com.aiden.commonBase.exceptionHandler.EduException;
+import com.aiden.exceptionHandler.EduException;
 import com.aiden.education.entity.subject.LevelOneSubject;
 import com.aiden.education.service.EduSubjectService;
 import io.swagger.annotations.Api;

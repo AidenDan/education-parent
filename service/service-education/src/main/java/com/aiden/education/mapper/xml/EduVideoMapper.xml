@@ -8,4 +8,9 @@
         where chapter_id = #{chapterId}
         limit 1
     </select>
+    <select id="getVideoSourceIdListByCourseId" resultType="java.lang.String">
+        select video_source_id
+        from edu_video
+        where course_id = #{courseId}
+    </select>
 </mapper>

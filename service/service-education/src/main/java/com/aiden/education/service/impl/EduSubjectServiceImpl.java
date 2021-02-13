@@ -1,6 +1,6 @@
 package com.aiden.education.service.impl;
 
-import com.aiden.commonBase.exceptionHandler.EduException;
+import com.aiden.exceptionHandler.EduException;
 import com.aiden.education.entity.EduSubject;
 import com.aiden.education.entity.excel.SubjectData;
 import com.aiden.education.entity.subject.LevelOneSubject;
@@ -8,6 +8,7 @@ import com.aiden.education.entity.subject.LevelTwoSubject;
 import com.aiden.education.listener.SubjectExcelListener;
 import com.aiden.education.mapper.EduSubjectMapper;
 import com.aiden.education.service.EduSubjectService;
+import com.aiden.exceptionHandler.EduException;
 import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;

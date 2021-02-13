@@ -21,6 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Aiden
@@ -77,6 +79,27 @@ public class VideoServiceImpl implements VodService {
         DeleteVideoRequest deleteVideoRequest = new DeleteVideoRequest();
         // 设置视频id，根据id进行删除
         deleteVideoRequest.setVideoIds(videoId);
+        // 客户端进行删除
+        try {
+            client.getAcsResponse(deleteVideoRequest);
+        } catch (ClientException e) {
+            throw new RuntimeException("删除视频失败!");
+        }
+    }
+
+    @Override
+    public void deleteVideoByBatchVideoId(List<String> videoIdList) {
+        // 格式转换 将集合转化为 1,2,3,4,5的格式
+        String finalList = videoIdList.stream().filter(videoId -> {
+            return !StringUtils.isEmpty(videoId);
+        }).collect(Collectors.joining(","));
+        log.info("finalList:::{}", finalList);
+        // 获取客户端
+        DefaultAcsClient client = AliVideoClientUtils.initVodClient(keyId, keySecret);
+        // 创建删除对象
+        DeleteVideoRequest deleteVideoRequest = new DeleteVideoRequest();
+        // 设置视频id，根据id进行删除
+        deleteVideoRequest.setVideoIds(finalList);
         // 客户端进行删除
         try {
             client.getAcsResponse(deleteVideoRequest);

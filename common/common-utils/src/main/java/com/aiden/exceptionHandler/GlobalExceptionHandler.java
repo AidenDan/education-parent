@@ -1,6 +1,7 @@
-package com.aiden.commonBase.exceptionHandler;
+package com.aiden.exceptionHandler;
 
 import com.aiden.commenUtils.CommonResult;
+import com.aiden.exceptionHandler.EduException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

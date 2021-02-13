@@ -1,6 +1,6 @@
 package com.aiden.education.service.impl;
 
-import com.aiden.commonBase.exceptionHandler.EduException;
+import com.aiden.exceptionHandler.EduException;
 import com.aiden.education.entity.EduChapter;
 import com.aiden.education.entity.EduVideo;
 import com.aiden.education.entity.chapter.ChapterVo;
@@ -9,6 +9,7 @@ import com.aiden.education.mapper.EduChapterMapper;
 import com.aiden.education.mapper.EduVideoMapper;
 import com.aiden.education.service.EduChapterService;
 import com.aiden.education.service.EduVideoService;
+import com.aiden.exceptionHandler.EduException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;

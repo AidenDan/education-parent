@@ -1,4 +1,4 @@
-package com.aiden.commonBase.exceptionHandler;
+package com.aiden.exceptionHandler;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

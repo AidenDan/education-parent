@@ -5,6 +5,8 @@ import com.aiden.education.feignClient.VodClient;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * @author Aiden
  * @version 1.0
@@ -17,5 +19,10 @@ public class VodClientHystrix implements VodClient {
     @Override
     public CommonResult deleteVideoByVideoId(String videoId) {
         return CommonResult.fail().message("删除阿里云视频的微服务调用失败");
+    }
+
+    @Override
+    public CommonResult deleteVideoByBatchVideoId(List<String> videoIdList) {
+        return CommonResult.fail().message("批量删除阿里云视频的微服务调用失败");
     }
 }

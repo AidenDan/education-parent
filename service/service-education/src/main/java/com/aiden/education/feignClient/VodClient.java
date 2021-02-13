@@ -7,6 +7,9 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.List;
 
 /**
  * @author Aiden
@@ -21,5 +24,9 @@ public interface VodClient {
 
     @ApiOperation(value = "删除视频")
     @DeleteMapping("/eduvod/deleteVideoByVideoId/{videoId}")
-    public CommonResult deleteVideoByVideoId(@PathVariable("videoId") String videoId);
+    CommonResult deleteVideoByVideoId(@PathVariable("videoId") String videoId);
+
+    @ApiOperation(value = "批量删除视频")
+    @DeleteMapping("/eduvod/deleteVideoByBatchVideoId")
+    CommonResult deleteVideoByBatchVideoId(@RequestBody List<String> videoIdList);
 }
