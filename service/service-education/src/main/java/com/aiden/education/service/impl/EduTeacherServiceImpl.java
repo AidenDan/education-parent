@@ -55,4 +55,12 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
         resultMap.put("rows", teacherList);
         return resultMap;
     }
+
+    @Override
+    public List<EduTeacher> getHotTeacher() {
+        QueryWrapper<EduTeacher> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("gmt_create");
+        wrapper.last("limit 4");
+        return baseMapper.selectList(wrapper);
+    }
 }

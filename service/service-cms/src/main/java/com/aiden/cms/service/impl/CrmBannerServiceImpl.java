@@ -93,4 +93,15 @@ public class CrmBannerServiceImpl extends ServiceImpl<CrmBannerMapper, CrmBanner
         CrmBanner crmBanner = this.getById(bannerId);
         return CommonResult.success().data("crmBanner", crmBanner);
     }
+
+    /**
+     * 查询所有的banner
+     *
+     * @return 结果
+     */
+    @Override
+    public CommonResult getTotalBanner() {
+        List<CrmBanner> bannerList = baseMapper.selectList(null);
+        return CommonResult.success().data("bannerList", bannerList);
+    }
 }

@@ -55,4 +55,11 @@ public interface CrmBannerService extends IService<CrmBanner> {
      * @return 结果
      */
     CommonResult getBannerById(String bannerId);
+
+    /**
+     * 查询所有的banner
+     *
+     * @return 结果
+     */
+    CommonResult getTotalBanner();
 }

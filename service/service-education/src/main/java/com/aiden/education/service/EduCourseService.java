@@ -1,11 +1,13 @@
 package com.aiden.education.service;
 
 import com.aiden.education.entity.EduCourse;
+import com.aiden.education.entity.EduTeacher;
 import com.aiden.education.query.CourseQuery;
 import com.aiden.education.query.vo.CourseInfoVO;
 import com.aiden.education.query.vo.PublishCourseInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -70,4 +72,11 @@ public interface EduCourseService extends IService<EduCourse> {
      * @param courseId 课程id
      */
     void deleteCourseById(String courseId);
+
+    /**
+     * 查询热门课程
+     *
+     * @return 课程数据
+     */
+    List<EduCourse> getHotCourse();
 }

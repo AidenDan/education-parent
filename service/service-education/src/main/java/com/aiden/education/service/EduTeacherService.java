@@ -20,10 +20,17 @@ public interface EduTeacherService extends IService<EduTeacher> {
     /**
      * 根据条件分页查询讲师
      *
-     * @param current current
-     * @param limit limit
+     * @param current      current
+     * @param limit        limit
      * @param teacherQuery teacherQuery
      * @return List<EduTeacher>
      */
     Map<String, Object> pageTeacher(long current, long limit, TeacherQuery teacherQuery);
+
+    /**
+     * 查询热门讲师
+     *
+     * @return 讲师数据
+     */
+    List<EduTeacher> getHotTeacher();
 }

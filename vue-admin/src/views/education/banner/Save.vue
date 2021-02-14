@@ -56,7 +56,8 @@
         banner: {
           title: '',
           sort: 0,
-          imageUrl: ''
+          imageUrl: '',
+          linkUrl: ''
         },
         saveBtnDisabled: false, // 保存按钮是否禁用,
         imagecropperShow: false, // 默认设为false，不展示弹框
@@ -100,8 +101,9 @@
           this.updatebannerInfo(this.banner);
         }
       },
-      // 保存讲师
+      // 保存banner
       savebanner() {
+        this.banner.linkUrl = '/'
         bannerApi.saveBanner(this.banner)
           .then(() => {
             this.$message({

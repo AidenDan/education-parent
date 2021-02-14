@@ -185,4 +185,17 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
         this.removeById(courseId);
     }
+
+    /**
+     * 查询热门课程
+     *
+     * @return 课程数据
+     */
+    @Override
+    public List<EduCourse> getHotCourse() {
+        QueryWrapper<EduCourse> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("view_count");
+        wrapper.last("limit 8");
+        return baseMapper.selectList(wrapper);
+    }
 }
