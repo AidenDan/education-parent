@@ -86,6 +86,8 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         } catch (Exception e) {
             throw new EduException(20001, "添加课程信息失败");
         }
+        // 使缓存的热门课程失效
+        redisTemplate.delete("hotCourse");
         return courseId;
     }
 
@@ -130,6 +132,9 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         this.updateById(eduCourse);
         // 更新课程描述
         eduCourseDescriptionService.updateById(eduCourseDescription);
+
+        // 使缓存的热门课程失效
+        redisTemplate.delete("hotCourse");
         return courseInfoVO.getId();
     }
 
@@ -184,18 +189,30 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         eduChapterService.remove(chapterWrapper);
 
         this.removeById(courseId);
+        // 使缓存的热门课程失效
+        redisTemplate.delete("hotCourse");
     }
 
     /**
+     * redis中不做复杂查询,查询去db
      * 查询热门课程
+     * 待做接口访问次数统计
+     * 缓存的是根据观看次数多少排序的 每次访问该课程都要刷新缓存
      *
      * @return 课程数据
      */
     @Override
     public List<EduCourse> getHotCourse() {
-        QueryWrapper<EduCourse> wrapper = new QueryWrapper<>();
-        wrapper.orderByDesc("view_count");
-        wrapper.last("limit 8");
-        return baseMapper.selectList(wrapper);
+        List<EduCourse> hotCourse = (List<EduCourse>) redisTemplate.opsForValue().get("hotCourse");
+        if (hotCourse != null && !hotCourse.isEmpty()) {
+            return hotCourse;
+        } else {
+            QueryWrapper<EduCourse> wrapper = new QueryWrapper<>();
+            wrapper.orderByDesc("view_count");
+            wrapper.last("limit 8");
+            List<EduCourse> courseList = baseMapper.selectList(wrapper);
+            redisTemplate.opsForValue().set("hotCourse", courseList);
+            return courseList;
+        }
     }
 }

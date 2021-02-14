@@ -7,6 +7,8 @@ import com.aiden.education.service.EduTeacherService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -24,6 +26,8 @@ import java.util.Map;
  */
 @Service
 public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeacher> implements EduTeacherService {
+    @Autowired
+    RedisTemplate<String, Object> redisTemplate;
 
     @Override
     public Map<String, Object> pageTeacher(long current, long limit, TeacherQuery teacherQuery) {
@@ -58,9 +62,16 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
 
     @Override
     public List<EduTeacher> getHotTeacher() {
-        QueryWrapper<EduTeacher> wrapper = new QueryWrapper<>();
-        wrapper.orderByDesc("gmt_create");
-        wrapper.last("limit 4");
-        return baseMapper.selectList(wrapper);
+        List<EduTeacher> hotTeacher = (List<EduTeacher>) redisTemplate.opsForValue().get("hotTeacher");
+        if (hotTeacher != null && !hotTeacher.isEmpty()) {
+            return hotTeacher;
+        } else {
+            QueryWrapper<EduTeacher> wrapper = new QueryWrapper<>();
+            wrapper.orderByDesc("gmt_create");
+            wrapper.last("limit 4");
+            List<EduTeacher> teacherList = baseMapper.selectList(wrapper);
+            redisTemplate.opsForValue().set("hotTeacher", teacherList);
+            return teacherList;
+        }
     }
 }
