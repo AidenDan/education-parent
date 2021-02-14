@@ -1,5 +1,6 @@
 package com.aiden.education.service.impl;
 
+import com.aiden.commenUtils.CommonResult;
 import com.aiden.exceptionHandler.EduException;
 import com.aiden.education.entity.*;
 import com.aiden.education.feignClient.VodClient;
@@ -166,7 +167,10 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         List<String> videoIdList = eduVideoMapper.getVideoSourceIdListByCourseId(courseId);
         // 调用微服务删除视频
         if (!videoIdList.isEmpty()) {
-            vodClient.deleteVideoByBatchVideoId(videoIdList);
+            CommonResult commonResult = vodClient.deleteVideoByBatchVideoId(videoIdList);
+            if (20001 == commonResult.getCode()) {
+                throw new EduException(20001, "调用批量删除小节视频的微服务失败!");
+            }
         }
 
         QueryWrapper<EduVideo> videoWrapper = new QueryWrapper<>();

@@ -1,9 +1,11 @@
 package com.aiden.education.service.impl;
 
+import com.aiden.commenUtils.CommonResult;
 import com.aiden.education.entity.EduVideo;
 import com.aiden.education.feignClient.VodClient;
 import com.aiden.education.mapper.EduVideoMapper;
 import com.aiden.education.service.EduVideoService;
+import com.aiden.exceptionHandler.EduException;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.codingapi.txlcn.tc.annotation.LcnTransaction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +66,10 @@ public class EduVideoServiceImpl extends ServiceImpl<EduVideoMapper, EduVideo> i
         EduVideo eduVideo = this.getById(id);
         String videoSourceId = eduVideo.getVideoSourceId();
         if (!StringUtils.isEmpty(videoSourceId)) {
-            vodClient.deleteVideoByVideoId(eduVideo.getVideoSourceId());
+            CommonResult commonResult = vodClient.deleteVideoByVideoId(eduVideo.getVideoSourceId());
+            if (20001 == commonResult.getCode()) {
+                throw new EduException(20001, "调用删除小节视频的微服务失败!");
+            }
         }
         this.removeById(id);
     }

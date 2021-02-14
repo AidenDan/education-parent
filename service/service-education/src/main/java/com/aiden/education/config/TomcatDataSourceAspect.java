@@ -1,13 +1,13 @@
 package com.aiden.education.config;
 
-        import com.codingapi.txlcn.tc.aspect.weave.DTXResourceWeaver;
-        import org.aspectj.lang.ProceedingJoinPoint;
-        import org.aspectj.lang.annotation.Around;
-        import org.aspectj.lang.annotation.Aspect;
-        import org.springframework.beans.factory.annotation.Autowired;
-        import org.springframework.stereotype.Component;
+import com.codingapi.txlcn.tc.aspect.weave.DTXResourceWeaver;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-        import java.sql.Connection;
+import java.sql.Connection;
 
 /**
  * @author Aiden
@@ -23,7 +23,7 @@ public class TomcatDataSourceAspect {
     private DTXResourceWeaver dtxResourceWeaver;
 
     @Around("execution(public java.sql.Connection *.getConnection(..))")
-    public Object around(ProceedingJoinPoint point) throws Throwable{
-        return dtxResourceWeaver.getConnection(()->(Connection) point.proceed());
+    public Object around(ProceedingJoinPoint point) throws Throwable {
+        return dtxResourceWeaver.getConnection(() -> (Connection) point.proceed());
     }
 }

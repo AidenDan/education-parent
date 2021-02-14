@@ -19,7 +19,7 @@ import java.util.List;
  */
 
 @Component
-@FeignClient(value = "service-vod", fallback = VodClientHystrix.class)
+@FeignClient(name = "service-vod", fallback = VodClientHystrix.class)
 public interface VodClient {
 
     @ApiOperation(value = "删除视频")
