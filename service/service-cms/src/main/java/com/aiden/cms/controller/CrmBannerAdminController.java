@@ -1,6 +1,5 @@
 package com.aiden.cms.controller;
 
-
 import com.aiden.cms.entity.CrmBanner;
 import com.aiden.cms.service.CrmBannerService;
 import com.aiden.commenUtils.CommonResult;
@@ -33,7 +32,7 @@ public class CrmBannerAdminController {
 
     // 分页查询banner 查询到的数据都封装Page中
     @ApiOperation(value = "分页查询banner")
-    @GetMapping("/page/{current}/{limit}")
+    @PostMapping("/page/{current}/{limit}")
     public CommonResult findByPagination(@PathVariable("current") long current, @PathVariable("limit") long limit, @RequestBody CrmBanner crmBanner) {
         return crmBannerService.findByPagination(current, limit, crmBanner);
     }
@@ -54,6 +53,12 @@ public class CrmBannerAdminController {
     @PutMapping("/updateBanner")
     public CommonResult updateBanner(@RequestBody CrmBanner crmBanner) {
         return crmBannerService.updateBanner(crmBanner);
+    }
+
+    @ApiOperation(value = "根据id查询banner")
+    @GetMapping("/getBannerById/{bannerId}")
+    public CommonResult getBannerById(@PathVariable("bannerId") String bannerId) {
+        return crmBannerService.getBannerById(bannerId);
     }
 }
 

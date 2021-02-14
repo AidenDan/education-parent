@@ -26,6 +26,7 @@ public interface CrmBannerService extends IService<CrmBanner> {
 
     /**
      * 增加banner
+     *
      * @param crmBanner 封装banner数据
      * @return 结果
      */
@@ -33,6 +34,7 @@ public interface CrmBannerService extends IService<CrmBanner> {
 
     /**
      * 删除banner
+     *
      * @param bannerId banner id
      * @return 结果
      */
@@ -40,8 +42,17 @@ public interface CrmBannerService extends IService<CrmBanner> {
 
     /**
      * 修改banner
+     *
      * @param crmBanner 封装banner数据
      * @return 结果
      */
     CommonResult updateBanner(CrmBanner crmBanner);
+
+    /**
+     * 根据id查询banner
+     *
+     * @param bannerId banner id
+     * @return 结果
+     */
+    CommonResult getBannerById(String bannerId);
 }

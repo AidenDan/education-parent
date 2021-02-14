@@ -132,6 +132,35 @@ export const constantRouterMap = [
   },
 
   {
+    path: '/banner',
+    component: Layout,
+    redirect: '/banner/bannerTable',
+    name: 'Banner管理',
+    meta: {title: 'Banner管理', icon: 'example'},
+    children: [
+      {
+        path: '/bannerTable',
+        name: 'Banner列表',
+        component: () => import('@/views/education/banner/List'),
+        meta: {title: 'Banner列表', icon: 'table'}
+      },
+      {
+        path: '/saveBanner',
+        name: '添加Banner',
+        component: () => import('@/views/education/banner/Save'),
+        meta: {title: '添加Banner', icon: 'tree'}
+      },
+      {
+        path: '/editBanner/:id',
+        name: '编辑banner',
+        component: () => import('@/views/education/banner/Save'),
+        meta: {title: '编辑讲师', icon: 'tree', noCache: true},
+        hidden: true  // 隐藏该组件
+      }
+    ]
+  },
+
+  {
     path: '/example',
     component: Layout,
     redirect: '/example/table',

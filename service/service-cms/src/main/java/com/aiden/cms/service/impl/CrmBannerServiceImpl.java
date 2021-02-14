@@ -1,18 +1,18 @@
 package com.aiden.cms.service.impl;
 
-        import com.aiden.cms.entity.CrmBanner;
-        import com.aiden.cms.mapper.CrmBannerMapper;
-        import com.aiden.cms.service.CrmBannerService;
-        import com.aiden.commenUtils.CommonResult;
-        import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-        import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-        import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-        import org.springframework.stereotype.Service;
-        import org.springframework.util.StringUtils;
+import com.aiden.cms.entity.CrmBanner;
+import com.aiden.cms.mapper.CrmBannerMapper;
+import com.aiden.cms.service.CrmBannerService;
+import com.aiden.commenUtils.CommonResult;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
-        import java.util.HashMap;
-        import java.util.List;
-        import java.util.Map;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -80,5 +80,17 @@ public class CrmBannerServiceImpl extends ServiceImpl<CrmBannerMapper, CrmBanner
     public CommonResult updateBanner(CrmBanner crmBanner) {
         this.updateById(crmBanner);
         return CommonResult.success();
+    }
+
+    /**
+     * 根据id查询banner
+     *
+     * @param bannerId banner id
+     * @return 结果
+     */
+    @Override
+    public CommonResult getBannerById(String bannerId) {
+        CrmBanner crmBanner = this.getById(bannerId);
+        return CommonResult.success().data("crmBanner", crmBanner);
     }
 }
