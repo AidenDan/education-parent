@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan(basePackages = {"com.aiden"})
-@MapperScan({"com.aiden.education.mapper"})
+@MapperScan({"com.aiden.cms.mapper"})
 public class CmsConfiguration {
     /**
      * 逻辑删除插件
