@@ -7,6 +7,8 @@ import com.aiden.commenUtils.CommonResult;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -25,6 +27,8 @@ import java.util.Map;
 
 @Service
 public class CrmBannerServiceImpl extends ServiceImpl<CrmBannerMapper, CrmBanner> implements CrmBannerService {
+    @Autowired
+    RedisTemplate<String, Object> redisTemplate;
 
     @Override
     public CommonResult findByPagination(long current, long limit, CrmBanner crmBanner) {
@@ -36,13 +40,13 @@ public class CrmBannerServiceImpl extends ServiceImpl<CrmBannerMapper, CrmBanner
         this.page(page, wrapper);
 
         // 当前页数据
-        List<CrmBanner> teacherList = page.getRecords();
+        List<CrmBanner> bannerList = page.getRecords();
 
         // 总的记录数
         long total = page.getTotal();
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("total", total);
-        resultMap.put("rows", teacherList);
+        resultMap.put("rows", bannerList);
         return CommonResult.success().data(resultMap);
     }
 
@@ -54,6 +58,8 @@ public class CrmBannerServiceImpl extends ServiceImpl<CrmBannerMapper, CrmBanner
      */
     @Override
     public CommonResult addBanner(CrmBanner crmBanner) {
+        // 使缓存中key bannerList失效
+        redisTemplate.delete("bannerList");
         this.save(crmBanner);
         return CommonResult.success();
     }
@@ -66,6 +72,7 @@ public class CrmBannerServiceImpl extends ServiceImpl<CrmBannerMapper, CrmBanner
      */
     @Override
     public CommonResult deleteBanner(String bannerId) {
+        redisTemplate.delete("bannerList");
         this.removeById(bannerId);
         return CommonResult.success();
     }
@@ -78,6 +85,7 @@ public class CrmBannerServiceImpl extends ServiceImpl<CrmBannerMapper, CrmBanner
      */
     @Override
     public CommonResult updateBanner(CrmBanner crmBanner) {
+        redisTemplate.delete("bannerList");
         this.updateById(crmBanner);
         return CommonResult.success();
     }
@@ -101,7 +109,15 @@ public class CrmBannerServiceImpl extends ServiceImpl<CrmBannerMapper, CrmBanner
      */
     @Override
     public CommonResult getTotalBanner() {
-        List<CrmBanner> bannerList = baseMapper.selectList(null);
-        return CommonResult.success().data("bannerList", bannerList);
+        // 先查询缓存 如果缓存中没有再去查询db
+        List<CrmBanner> dbBannerList = (List<CrmBanner>) redisTemplate.opsForValue().get("bannerList");
+        if (dbBannerList != null && !dbBannerList.isEmpty()) {
+            return CommonResult.success().data("bannerList", dbBannerList);
+        } else {
+            // 从db中查询
+            List<CrmBanner> cacheBannerList = baseMapper.selectList(null);
+            redisTemplate.opsForValue().set("bannerList", cacheBannerList);
+            return CommonResult.success().data("bannerList", cacheBannerList);
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.aiden.education.config;
+package com.aiden.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -12,10 +12,6 @@
     <artifactId>service-cms</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
         <!--mybatis-plus-->
         <dependency>
             <groupId>com.baomidou</groupId>
@@ -32,6 +28,5 @@
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
-
 
 </project>
