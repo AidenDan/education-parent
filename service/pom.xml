@@ -17,6 +17,7 @@
         <module>service-vod</module>
         <module>service-cms</module>
         <module>service-message</module>
+        <module>srevice-user</module>
     </modules>
 
     <dependencies>

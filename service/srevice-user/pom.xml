@@ -9,10 +9,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>service-cms</artifactId>
+    <artifactId>srevice-user</artifactId>
+    <packaging>jar</packaging>
 
     <dependencies>
-        <!--mybatis-plus-->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
@@ -42,6 +42,4 @@
             </resource>
         </resources>
     </build>
-
-
 </project>
