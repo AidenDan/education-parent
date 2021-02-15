@@ -4,8 +4,8 @@
     <header id="header">
       <section class="container">
         <h1 id="logo">
-          <a href="#" title="谷粒学院">
-            <img src="~/assets/img/logo.png" width="100%" alt="谷粒学院">
+          <a href="#" title="sky walker">
+            <img src="~/assets/img/logo.png" width="100%" alt="sky walker">
           </a>
         </h1>
         <div class="h-r-nsl">
@@ -29,12 +29,12 @@
           <!-- / nav -->
           <ul class="h-r-login">
             <li id="no-login">
-              <a href="/sing_in" title="登录">
+              <a href="/login" title="登录">
                 <em class="icon18 login-icon">&nbsp;</em>
                 <span class="vam ml5">登录</span>
               </a>
               |
-              <a href="/sign_up" title="注册">
+              <a href="/register" title="注册">
                 <span class="vam ml5">注册</span>
               </a>
             </li>

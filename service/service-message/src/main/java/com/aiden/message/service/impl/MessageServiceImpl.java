@@ -56,6 +56,7 @@ public class MessageServiceImpl implements MessageService {
 
         code = RandomUtil.getFourBitRandom();
         log.info("验证码为:::{}", code);
+        redisTemplate.opsForValue().set(phoneNumber, code, 5, TimeUnit.MINUTES);
         Map<String, Object> param = new HashMap<>();
         param.put("code", code);
 
@@ -81,10 +82,11 @@ public class MessageServiceImpl implements MessageService {
             // 如果发送短信成功,把验证码存到redis中5分钟
             if (success) {
                 redisTemplate.opsForValue().set(phoneNumber, code, 5, TimeUnit.MINUTES);
+                return CommonResult.success().message("发送验证码成功");
             }
-            return success ? CommonResult.success().message("发送验证码成功") : CommonResult.fail().message("发送验证码失败");
         } catch (ClientException e) {
             e.printStackTrace();
+            return CommonResult.fail().message("发送验证码失败");
         }
         return CommonResult.fail().message("发送验证码失败");
     }

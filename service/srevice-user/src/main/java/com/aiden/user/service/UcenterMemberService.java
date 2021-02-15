@@ -1,7 +1,10 @@
 package com.aiden.user.service;
 
-        import com.aiden.user.entity.UcenterMember;
-        import com.baomidou.mybatisplus.extension.service.IService;
+import com.aiden.user.entity.UcenterMember;
+import com.aiden.user.entity.vo.RegisterVo;
+import com.baomidou.mybatisplus.extension.service.IService;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -21,4 +24,19 @@ public interface UcenterMemberService extends IService<UcenterMember> {
      * @return token
      */
     String login(UcenterMember member);
+
+    /**
+     * 注册用户
+     *
+     * @param registerVo 封装注册的数据
+     */
+    void register(RegisterVo registerVo);
+
+    /**
+     * 从请求的token中获取用户信息
+     *
+     * @param request 请求
+     * @return 用户信息
+     */
+    UcenterMember getUserInfoByToken(HttpServletRequest request);
 }
