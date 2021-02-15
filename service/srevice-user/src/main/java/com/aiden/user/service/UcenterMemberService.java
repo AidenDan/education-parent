@@ -1,7 +1,7 @@
 package com.aiden.user.service;
 
-import com.aiden.user.entity.UcenterMember;
-import com.baomidou.mybatisplus.extension.service.IService;
+        import com.aiden.user.entity.UcenterMember;
+        import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
@@ -13,4 +13,12 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface UcenterMemberService extends IService<UcenterMember> {
 
+    /**
+     * 根据用户的手机号与用户密码进行登录
+     * 登录成功后返回jwt token
+     *
+     * @param member 封装用户的登录信息
+     * @return token
+     */
+    String login(UcenterMember member);
 }
