@@ -42,40 +42,40 @@
 <script>
   import '~/assets/css/sign.css'
   import '~/assets/css/iconfont.css'
+  import cookie from 'js-cookie'
   import loginApi from "../api/login";
 
   export default {
     layout: 'sign', // 使用sign.vue布局
     data() {
       return {
+        // 封装登录填写的参数
         user: {
           mobile: '',
           password: ''
         },
+        // 封装用户信息
         loginInfo: {}
       }
     },
     methods: {
       submitLogin() {
-        loginApi.submitLogin(this.user).then(response => {
-          if (response.data.success) {
-            //把token存在cookie中、也可以放在localStorage中
-            cookie.set('guli_token', response.data.data.token, {
-              domain:
-                'localhost'
-            })
-            //登录成功根据token获取用户信息
-            loginApi.getLoginInfo().then(response => {
-              this.loginInfo = response.data.data.item
-              //将用户信息记录cookie
-              cookie.set('guli_ucenter', this.loginInfo, {
-                domain: 'localhost'
+        loginApi.submitLogin(this.user)
+          .then(response => {
+            if (response.data.code === 20000) {
+              //把token存在cookie中、也可以放在localStorage中
+              cookie.set('token', response.data.data.token, {domain: 'localhost'});
+              //登录成功根据token获取用户信息
+              loginApi.getLoginInfo()
+                .then(response => {
+                this.loginInfo = response.data.data.member;
+                //将用户信息记录cookie
+                cookie.set('member', this.loginInfo, {domain: 'localhost'});
+                //跳转页面
+                window.location.href = "/";
               })
-              //跳转页面
-              window.location.href = "/";
-            })
-          }
-        })
+            }
+          })
       },
       checkPhone(rule, value, callback) {
         //debugger

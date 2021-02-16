@@ -28,7 +28,7 @@
           </ul>
           <!-- / nav -->
           <ul class="h-r-login">
-            <li id="no-login">
+            <li v-if="!member.id" id="no-login">
               <a href="/login" title="登录">
                 <em class="icon18 login-icon">&nbsp;</em>
                 <span class="vam ml5">登录</span>
@@ -38,25 +38,25 @@
                 <span class="vam ml5">注册</span>
               </a>
             </li>
-            <li class="mr10 undis" id="is-login-one">
-              <a href="#" title="消息" id="headerMsgCountId">
+
+            <li v-if="member.id" id="is-login-one" class="mr10">
+              <a id="headerMsgCountId" href="#" title="消息">
                 <em class="icon18 news-icon">&nbsp;</em>
               </a>
               <q class="red-point" style="display: none">&nbsp;</q>
             </li>
-            <li class="h-r-user undis" id="is-login-two">
-              <a href="#" title>
+            <li v-if="member.id" id="is-login-two" class="h-r-user">
+              <a href="/ucenter" title>
                 <img
-                  src="~/assets/img/avatar-boy.gif"
+                  :src="member.avatar"
                   width="30"
                   height="30"
                   class="vam picImg"
                   alt
                 >
-                <span class="vam disIb" id="userName"></span>
+                <span id="userName" class="vam disIb">{{ member.nickname }}</span>
               </a>
-              <a href="javascript:void(0)" title="退出" onclick="exit();"
-                 class="ml5">退出</a>
+              <a href="javascript:void(0);" title="退出" @click="logout()" class="ml5">退出</a>
             </li>
             <!-- /未登录显示第1 li；登录后显示第2，3 li -->
           </ul>
@@ -135,6 +135,38 @@
   import "~/assets/css/theme.css";
   import "~/assets/css/global.css";
   import "~/assets/css/web.css";
+  import cookie from 'js-cookie';
 
-  export default {};
+  export default {
+    data() {
+      return {
+        token: '', // token信息
+        member: {} // 登录用户信息
+      }
+    },
+    created() {
+      this.getLoginMemberInfo();
+    },
+    methods: {
+      // 从cookie获取用户信息
+      getLoginMemberInfo() {
+        // 从cookie中获取token信息
+        this.token = cookie.get("token");
+        // 从cookie中获取用户信息
+        let memberStr = cookie.get("member");
+        // 把json字符串转为json对象 从cookie中取出来的为字符串
+        if (memberStr) {
+          this.member = JSON.parse(memberStr);
+        }
+      },
+      // 退出
+      logout() {
+        // 清空cookie 清空登录的用户信息
+        cookie.set('token', '', {domain: 'localhost'});
+        cookie.set('member', '', {domain: 'localhost'});
+        this.member = {};
+        window.location.href = "/";
+      }
+    }
+  };
 </script>

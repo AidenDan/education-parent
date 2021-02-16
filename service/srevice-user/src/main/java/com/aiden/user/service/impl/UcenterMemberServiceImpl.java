@@ -92,7 +92,7 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
 
         UcenterMember ucenterMember = new UcenterMember();
         BeanUtils.copyProperties(registerVo, ucenterMember);
-        ucenterMember.setPassword(MD5.encrypt(registerVo.getCode()));
+        ucenterMember.setPassword(MD5.encrypt(registerVo.getPassword()));
 
         // 给一个默认头像
         ucenterMember.setAvatar("http://skywalker-bucket-01.oss-cn-beijing.aliyuncs.com/2021/01/30/35c2d73e0c564310866cef8d1c76fbd7.png");
