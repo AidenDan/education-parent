@@ -85,7 +85,7 @@
                 <li v-for="teacher in hotTeacherList" :key="teacher.id">
                   <section class="i-teach-wrap">
                     <div class="i-teach-pic">
-                      <a href="/teacher/1" :title="teacher.name">
+                      <a :href="'/teacher/'+teacher.id" :title="teacher.name">
                         <img :alt="teacher.name"
                              :src="teacher.avatar">
                       </a>
@@ -107,7 +107,7 @@
               <div class="clear"></div>
             </article>
             <section class="tac pt20">
-              <a href="#" title="全部讲师" class="comm-btn c-btn-2">全部讲师</a>
+              <a href="/teacher" title="全部讲师" class="comm-btn c-btn-2">全部讲师</a>
             </section>
           </div>
         </section>
