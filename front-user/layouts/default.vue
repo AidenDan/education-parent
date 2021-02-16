@@ -136,6 +136,7 @@
   import "~/assets/css/global.css";
   import "~/assets/css/web.css";
   import cookie from 'js-cookie';
+  import loginApi from "../api/login";
 
   export default {
     data() {
@@ -145,9 +146,24 @@
       }
     },
     created() {
+      // 微信扫码登录成功后去获取url中token
+      this.token = this.$route.query.token;
+      if (this.token) {
+        this.vxLogin();
+      }
       this.getLoginMemberInfo();
     },
     methods: {
+      vxLogin() {
+        cookie.set('token', this.token, {domain: 'localhost'});
+
+        // 调用方法根据token查询用户信息
+        loginApi.getLoginInfo()
+          .then(response => {
+            this.member = response.data.data.member;
+            cookie.set('member', this.member, {domain: 'localhost'});
+          })
+      },
       // 从cookie获取用户信息
       getLoginMemberInfo() {
         // 从cookie中获取token信息

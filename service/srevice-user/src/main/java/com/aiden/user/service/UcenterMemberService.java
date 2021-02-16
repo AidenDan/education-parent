@@ -1,10 +1,10 @@
 package com.aiden.user.service;
 
-import com.aiden.user.entity.UcenterMember;
-import com.aiden.user.entity.vo.RegisterVo;
-import com.baomidou.mybatisplus.extension.service.IService;
+        import com.aiden.user.entity.UcenterMember;
+        import com.aiden.user.entity.vo.RegisterVo;
+        import com.baomidou.mybatisplus.extension.service.IService;
 
-import javax.servlet.http.HttpServletRequest;
+        import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -39,4 +39,12 @@ public interface UcenterMemberService extends IService<UcenterMember> {
      * @return 用户信息
      */
     UcenterMember getUserInfoByToken(HttpServletRequest request);
+
+    /**
+     * 根据微信id查询用户
+     *
+     * @param openid 微信id
+     * @return 用户
+     */
+    UcenterMember getByOpenid(String openid);
 }

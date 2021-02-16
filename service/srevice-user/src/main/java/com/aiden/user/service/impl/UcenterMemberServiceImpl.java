@@ -112,4 +112,17 @@ public class UcenterMemberServiceImpl extends ServiceImpl<UcenterMemberMapper, U
         member.setPassword(null);
         return member;
     }
+
+    /**
+     * 根据微信id查询用户
+     *
+     * @param openid 微信id
+     * @return 用户
+     */
+    @Override
+    public UcenterMember getByOpenid(String openid) {
+        QueryWrapper<UcenterMember> wrapper = new QueryWrapper<>();
+        wrapper.eq("openid", openid);
+        return baseMapper.selectOne(wrapper);
+    }
 }

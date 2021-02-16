@@ -10,11 +10,10 @@ export default {
     })
   },
   // 登录成功后从token中获取用户信息
-  getLoginInfo(loginVo) {
+  getLoginInfo() {
     return request({
       url: `/user/ucenter-member/getUserInfoByToken`,
-      method: 'get',
-      data: loginVo
+      method: 'get'
     })
   }
 }

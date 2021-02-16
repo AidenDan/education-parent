@@ -8,7 +8,7 @@ const service = axios.create({
   timeout: 5000 // 请求超时时间
 });
 
-// http request 拦截器
+// http request 拦截器 每个前端请求都会到这里判断
 service.interceptors.request.use(
   config => {
 //debugger
