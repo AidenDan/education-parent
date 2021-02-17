@@ -184,5 +184,23 @@
   </div>
 </template>
 <script>
-  export default {};
+  import courseApi from "../../api/course"
+
+  export default {
+    data() {
+      return {
+        courseInfo: {}
+      }
+    },
+    created() {
+    },
+    methods: {
+      getCourseInfo(courseId) {
+        courseApi.getCourseInfoById(courseId)
+          .then(response => {
+          this.courseInfo = response.data.data.courseInfo;
+          })
+      }
+    }
+  };
 </script>

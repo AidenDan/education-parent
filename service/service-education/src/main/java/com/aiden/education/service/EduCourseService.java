@@ -4,6 +4,7 @@ import com.aiden.education.entity.EduCourse;
 import com.aiden.education.entity.EduTeacher;
 import com.aiden.education.query.CourseQuery;
 import com.aiden.education.query.vo.CourseInfoVO;
+import com.aiden.education.query.vo.CourseQueryFront;
 import com.aiden.education.query.vo.PublishCourseInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -79,4 +80,21 @@ public interface EduCourseService extends IService<EduCourse> {
      * @return 课程数据
      */
     List<EduCourse> getHotCourse();
+
+    /**
+     * 前台分页查询课程
+     *
+     * @param current          当前页
+     * @param limit            页大小
+     * @param courseQueryFront 封装查询参数
+     * @return 结果
+     */
+    Map<String, Object> pageTeacherFront(long current, long limit, CourseQueryFront courseQueryFront);
+
+    /**
+     * 根据课程id查询课程信息
+     * @param courseId 课程id
+     * @return 课程信息
+     */
+    CourseInfoVO getCourseInfoByIdFront(String courseId);
 }

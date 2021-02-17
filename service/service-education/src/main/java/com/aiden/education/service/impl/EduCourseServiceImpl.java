@@ -1,20 +1,17 @@
 package com.aiden.education.service.impl;
 
 import com.aiden.commenUtils.CommonResult;
+import com.aiden.education.query.vo.*;
 import com.aiden.exceptionHandler.EduException;
 import com.aiden.education.entity.*;
 import com.aiden.education.feignClient.VodClient;
 import com.aiden.education.mapper.EduCourseMapper;
 import com.aiden.education.mapper.EduVideoMapper;
 import com.aiden.education.query.CourseQuery;
-import com.aiden.education.query.vo.CourseInfoDO;
-import com.aiden.education.query.vo.CourseInfoVO;
-import com.aiden.education.query.vo.PublishCourseInfo;
 import com.aiden.education.service.EduChapterService;
 import com.aiden.education.service.EduCourseDescriptionService;
 import com.aiden.education.service.EduCourseService;
 import com.aiden.education.service.EduVideoService;
-import com.aiden.exceptionHandler.EduException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -214,5 +211,89 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
             redisTemplate.opsForValue().set("hotCourse", courseList);
             return courseList;
         }
+    }
+
+    /**
+     * 前台分页查询课程
+     *
+     * @param current          当前页
+     * @param limit            页大小
+     * @param courseQueryFront 封装查询参数
+     * @return 结果
+     */
+    @Override
+    public Map<String, Object> pageTeacherFront(long current, long limit, CourseQueryFront courseQueryFront) {
+        Page<EduCourse> page = new Page<>(current, limit);
+        QueryWrapper<EduCourse> wrapper = new QueryWrapper<>();
+        if (!StringUtils.isEmpty(courseQueryFront.getTeacherId())) {
+            wrapper.eq("teacher_id", courseQueryFront.getTeacherId());
+        }
+        if (!StringUtils.isEmpty(courseQueryFront.getTitle())) {
+            wrapper.eq("title", courseQueryFront.getTitle());
+        }
+        if (!StringUtils.isEmpty(courseQueryFront.getSubjectParentId())) {
+            wrapper.eq("subject_parent_id", courseQueryFront.getSubjectParentId());
+        }
+        if (!StringUtils.isEmpty(courseQueryFront.getSubjectId())) {
+            wrapper.eq("subject_id", courseQueryFront.getSubjectId());
+        }
+        if (!StringUtils.isEmpty(courseQueryFront.getBuyCountSort())) {
+            wrapper.orderByDesc("buy_count", courseQueryFront.getBuyCountSort());
+        }
+        if (!StringUtils.isEmpty(courseQueryFront.getGmtCreateSort())) {
+            wrapper.orderByDesc("gmt_create", courseQueryFront.getGmtCreateSort());
+        }
+        if (!StringUtils.isEmpty(courseQueryFront.getPriceSort())) {
+            wrapper.orderByDesc("price", courseQueryFront.getPriceSort());
+        }
+
+        // 数据封装到page中
+        baseMapper.selectPage(page, wrapper);
+        // 当前页数据
+        List<EduCourse> courseList = page.getRecords();
+
+        // 总的记录数
+        long total = page.getTotal();
+        // 当前页
+        long pageCurrent = page.getCurrent();
+        // 总页数
+        long pages = page.getPages();
+        // 页大小
+        long size = page.getSize();
+        // 上一页
+        boolean hasPrevious = page.hasPrevious();
+        // 下一页
+        boolean hasNext = page.hasNext();
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("total", total);
+        resultMap.put("rows", courseList);
+        resultMap.put("pageCurrent", pageCurrent);
+        resultMap.put("pages", pages);
+        resultMap.put("size", size);
+        resultMap.put("hasPrevious", hasPrevious);
+        resultMap.put("hasNext", hasNext);
+        return resultMap;
+    }
+
+    /**
+     * 根据课程id查询课程信息
+     *
+     * @param courseId 课程id
+     * @return 课程信息
+     */
+    @Override
+    public CourseInfoVO getCourseInfoByIdFront(String courseId) {
+        CourseInfoVoFront courseInfoVoFront = new CourseInfoVoFront();
+        // 查询mysql数据库
+        EduCourse course = this.getById(courseId);
+        BeanUtils.copyProperties(course, courseInfoVoFront.getEduCourse());
+
+        EduCourseDescription description = eduCourseDescriptionService.getById(courseId);
+        BeanUtils.copyProperties(description, courseInfoVoFront.getEduCourseDescription());
+
+//        eduChapterService.list()
+
+
+        return null;
     }
 }
