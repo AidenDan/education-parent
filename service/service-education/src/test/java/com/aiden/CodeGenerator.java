@@ -63,8 +63,6 @@ public class CodeGenerator {
                 "edu_comment",
                 "edu_course",
                 "edu_course_collect",
-                "edu_course_collect",
-                "edu_course_description",
                 "edu_course_description",
                 "edu_subject",
                 "edu_video"); // 表名称
@@ -78,7 +76,6 @@ public class CodeGenerator {
         strategy.setControllerMappingHyphenStyle(true); //url中驼峰转连字符
 
         mpg.setStrategy(strategy);
-
 
         // 6、执行
         mpg.execute();

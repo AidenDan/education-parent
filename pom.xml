@@ -21,7 +21,9 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <mybatis-plus.version>3.0.5</mybatis-plus.version>
+        <mybatis-plus.version>3.4.1</mybatis-plus.version>
+        <mybatis-plus.generator.version>3.4.1</mybatis-plus.generator.version>
+        <mybatis-plus.extension.version>3.4.1</mybatis-plus.extension.version>
         <velocity.version>2.0</velocity.version>
         <swagger.version>2.7.0</swagger.version>
         <aliyun.oss.version>2.8.3</aliyun.oss.version>
@@ -68,6 +70,19 @@
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis-plus.version}</version>
             </dependency>
+            <!-- https://mvnrepository.com/artifact/com.baomidou/mybatis-plus-generator -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-generator</artifactId>
+                <version>${mybatis-plus.generator.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/com.baomidou/mybatis-plus-extension -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-extension</artifactId>
+                <version>${mybatis-plus.extension.version}</version>
+            </dependency>
+
             <!-- velocity 模板引擎, Mybatis Plus 代码生成器需要 -->
             <dependency>
                 <groupId>org.apache.velocity</groupId>
