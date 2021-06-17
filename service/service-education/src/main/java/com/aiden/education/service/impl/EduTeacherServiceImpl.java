@@ -5,6 +5,7 @@ import com.aiden.education.mapper.EduTeacherMapper;
 import com.aiden.education.query.TeacherQuery;
 import com.aiden.education.service.EduTeacherService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +31,12 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
     RedisTemplate<String, Object> redisTemplate;
 
     @Override
-    public Map<String, Object> pageTeacher(long current, long limit, TeacherQuery teacherQuery) {
-        Page<EduTeacher> page = new Page<>(current, limit);
+    public IPage<EduTeacher> pageTeacher(long current, long limit, TeacherQuery teacherQuery) {
+        IPage<EduTeacher> page = new Page<>(current, limit);
         QueryWrapper<EduTeacher> wrapper = new QueryWrapper<>();
-        if (!StringUtils.isEmpty(teacherQuery.getName())) {
-            wrapper.like("name", teacherQuery.getName());
-        }
+
+        wrapper.like(!StringUtils.isEmpty(teacherQuery.getName()), "name", teacherQuery.getName());
+
         if (!StringUtils.isEmpty(teacherQuery.getLevel())) {
             wrapper.eq("level", teacherQuery.getLevel());
         }
@@ -48,7 +49,7 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
         // 按照创建时间倒序排列查询结果
         wrapper.orderByDesc("gmt_create");
         // 查询数据
-        this.page(page, wrapper);
+        IPage<EduTeacher> iPage = this.page(page, wrapper);
         // 当前页数据
         List<EduTeacher> teacherList = page.getRecords();
 
@@ -57,7 +58,7 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("total", total);
         resultMap.put("rows", teacherList);
-        return resultMap;
+        return iPage;
     }
 
     @Override

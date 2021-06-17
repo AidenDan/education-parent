@@ -18,7 +18,7 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @ComponentScan(basePackages = {"com.aiden"}) // 扫描所有模块、子模块的com.aiden包下的类
 public class UserMain {
-    public static void main(String[] args) {
+    public static void main(String[] args)       {
         SpringApplication.run(UserMain.class, args);
     }
 }

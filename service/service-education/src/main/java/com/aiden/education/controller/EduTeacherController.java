@@ -71,8 +71,10 @@ public class EduTeacherController {
     @ApiOperation(value = "按照条件分页查询讲师")
     @PostMapping("/pageCondition/{current}/{limit}")
     public CommonResult pageCondition(@PathVariable("current") long current, @PathVariable("limit") long limit, @RequestBody TeacherQuery teacherQuery) {
-        Map<String, Object> resultMap = eduTeacherService.pageTeacher(current, limit, teacherQuery);
-        return CommonResult.success().data(resultMap);
+        IPage<EduTeacher> iPage = eduTeacherService.pageTeacher(current, limit, teacherQuery);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("iPage", iPage);
+        return CommonResult.success().data("iPage", iPage);
     }
 
     // 添加讲师

@@ -8,6 +8,7 @@ import com.aiden.education.query.TeacherQuery;
 import com.aiden.education.service.EduCourseService;
 import com.aiden.education.service.impl.EduTeacherServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -90,8 +91,10 @@ public class FrontTeacherController {
     @ApiOperation(value = "按照条件分页查询讲师")
     @PostMapping("/pageCondition/{current}/{limit}")
     public CommonResult pageCondition(@PathVariable("current") long current, @PathVariable("limit") long limit, @RequestBody TeacherQuery teacherQuery) {
-        Map<String, Object> resultMap = eduTeacherService.pageTeacher(current, limit, teacherQuery);
-        return CommonResult.success().data(resultMap);
+        IPage<EduTeacher> iPage = eduTeacherService.pageTeacher(current, limit, teacherQuery);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("iPage", iPage);
+        return CommonResult.success().data(map);
     }
 
     // 添加讲师

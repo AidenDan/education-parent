@@ -2,6 +2,7 @@ package com.aiden.education.service;
 
 import com.aiden.education.entity.EduTeacher;
 import com.aiden.education.query.TeacherQuery;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public interface EduTeacherService extends IService<EduTeacher> {
      * @param teacherQuery teacherQuery
      * @return List<EduTeacher>
      */
-    Map<String, Object> pageTeacher(long current, long limit, TeacherQuery teacherQuery);
+    IPage<EduTeacher> pageTeacher(long current, long limit, TeacherQuery teacherQuery);
 
     /**
      * 查询热门讲师

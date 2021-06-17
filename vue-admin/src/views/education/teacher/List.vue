@@ -74,6 +74,16 @@
       layout="total, prev, pager, next, jumper"
       @current-change="getTeacherList"
     />
+
+    <el-pagination
+      @size-change="sizeChange"
+      @current-change="getTeacherList"
+      :current-page="current"
+      :page-sizes="[3, 5, 10, 20]"
+      :page-size="limit"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total">
+    </el-pagination>
   </div>
 
 </template>
@@ -88,7 +98,7 @@
         list: null,
         total: 0,
         current: 1,
-        limit: 5,
+        limit: 3,
         teacherQuery: {}
       }
     },
@@ -96,12 +106,17 @@
       this.getTeacherList()
     },
     methods: {
+      sizeChange(limit){
+        this.limit = limit;
+        this.getTeacherList();
+      },
       getTeacherList(current = 1) {  // current = 1为默认值
         this.current = current;
         teacher.getTeacherList(this.current, this.limit, this.teacherQuery)
           .then(response => {
-            this.list = response.data.rows;
-            this.total = response.data.total;
+            console.log(response);
+            this.list = response.data.iPage.records;
+            this.total = response.data.iPage.total;
             console.log(response)
           })  // 请求成功处理逻辑
           .catch(error => {
